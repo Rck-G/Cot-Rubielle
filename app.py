@@ -234,7 +234,7 @@ with st.sidebar:
         costo_hora_mo = st.number_input(
             "Valor Hora Trabajo (S/)",
             min_value=0.0,
-            value=6.0,
+            value=5.0,
             step=0.5,
             help="Sueldo por hora calculado para el artesano"
         )
@@ -244,9 +244,9 @@ with st.sidebar:
             "Multiplicador de Valor",
             min_value=1.0,
             max_value=3.0,
-            value=1.35,
+            value=1.20,
             step=0.05,
-            help="1.35 equivale a un 35% de margen comercial sobre costos"
+            help="1.20 equivale a un 20% de margen comercial sobre costos"
         )
 
     with st.container(border=True):
@@ -254,7 +254,7 @@ with st.sidebar:
         tiempo_ensamble = st.number_input(
             "Empaque y Arreglo (min)",
             min_value=0,
-            value=30,
+            value=120,
             step=5,
             help="Tiempo estimado para armado de base, envoltorio y lazo"
         )
@@ -297,7 +297,7 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    st.caption("✨ *Sistema de Cotización Artesanal v2.0*")
+    st.caption("✨ *Sistema de Cotización Artesanal v1.0*")
 
 # --- PESTAÑAS PRINCIPALES ---
 tab_builder, tab_insumos, tab_history, tab_catalog = st.tabs([
