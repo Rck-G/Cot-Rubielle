@@ -193,13 +193,27 @@ def save_order_to_history(cliente, ramo, costo_base, precio_venta, ganancia, ite
         df_h = pd.DataFrame([order_data])
     df_h.to_csv(HISTORIAL_FILE, index=False)
 
-# --- INICIALIZACIÓN DE ESTADO ---
+# --- INICIALIZACIÓN DE ESTADO PERSISTENTE ---
 if "catalog" not in st.session_state:
     st.session_state.catalog = load_and_fix_catalog()
 if "cart" not in st.session_state:
     st.session_state.cart = {}
 if "insumos_seleccionados" not in st.session_state:
     st.session_state.insumos_seleccionados = {}
+
+# --- FUNCIONES CALLBACK PARA MODIFICACIÓN SEGURA DE ESTADO ---
+def update_insumo(nombre, key_name):
+    st.session_state.insumos_seleccionados[nombre] = st.session_state[key_name]
+
+def remove_insumo(nombre):
+    st.session_state.insumos_seleccionados[nombre] = 0
+
+def update_cart_item(nombre, key_name):
+    st.session_state.cart[nombre] = st.session_state[key_name]
+
+def remove_cart_item(nombre):
+    if nombre in st.session_state.cart:
+        del st.session_state.cart[nombre]
 
 # --- HEADER PRINCIPAL ---
 st.markdown("""
@@ -247,7 +261,6 @@ with st.sidebar:
     st.divider()
     st.subheader("🤖 Empaque Automático")
     if st.button("🪄 Cargar Insumos Estándar de Ramo", use_container_width=True):
-        # Calcular total de flores actualmente agregadas
         total_flores = sum(st.session_state.cart.values()) if st.session_state.cart else 1
 
         insumos_automaticos = {
@@ -271,7 +284,7 @@ with st.sidebar:
             "Tarjeta hang tag": 1,
             "Tarjeta mensaje": 1,
             "Uso": 1,
-            "Papel Coreano": 3,  # Carga 3 por defecto
+            "Papel Coreano": 3,
             "Papel Leche": 1
         }
         
@@ -323,9 +336,9 @@ with tab_builder:
         
         cm_flores = 0.0
         tiempo_flores_min = 0
-        items_piezas_cliente = []  # Para la proforma del cliente
+        items_piezas_cliente = []
         
-        # 1. SECCIÓN DE PIEZAS Y FLORES (MODIFICABLE)
+        # 1. SECCIÓN DE PIEZAS Y FLORES
         st.markdown("##### 🌸 Piezas y Flores Principal")
         if st.session_state.cart:
             for item_name, qty in list(st.session_state.cart.items()):
@@ -345,28 +358,34 @@ with tab_builder:
                     with c1:
                         st.markdown(f"**{item_name}**\n<small style='color:#666;'>Cost. Mat: S/ {cm_subtotal:.2f} | Tiempo: {t_subtotal} min</small>", unsafe_allow_html=True)
                     with c2:
-                        new_qty = st.number_input("Cant", min_value=1, value=int(qty), key=f"cart_qty_{item_name}", label_visibility="collapsed")
-                        st.session_state.cart[item_name] = new_qty
+                        k_name = f"cart_qty_{item_name}"
+                        st.number_input(
+                            "Cant", 
+                            min_value=1, 
+                            value=int(qty), 
+                            key=k_name, 
+                            label_visibility="collapsed",
+                            on_change=update_cart_item,
+                            args=(item_name, k_name)
+                        )
                     with c3:
                         st.markdown(f"**S/ {cm_subtotal:.2f}**")
                     with c4:
-                        if st.button("🗑️", key=f"del_cart_{item_name}"):
-                            del st.session_state.cart[item_name]
-                            st.rerun()
+                        st.button("🗑️", key=f"del_cart_{item_name}", on_click=remove_cart_item, args=(item_name,))
         else:
             st.info("No hay flores agregadas todavía.")
 
         st.divider()
 
-# 2. SECCIÓN DE INSUMOS SELECCIONADOS (CORREGIDO)
+        # 2. SECCIÓN DE INSUMOS SELECCIONADOS (CORREGIDO CON CALLBACKS)
         st.markdown("##### 📦 Insumos y Empaque Seleccionados")
         cm_insumos = 0.0
         
-        # Filtramos solo los insumos con cantidad mayor a 0
-        insumos_activos = {k: v for k, v in st.session_state.insumos_seleccionados.items() if v > 0}
+        # Filtramos solo los insumos que tengan cantidad > 0 en el session_state
+        insumos_activos = [(k, v) for k, v in st.session_state.insumos_seleccionados.items() if v > 0]
         
         if insumos_activos:
-            for insumo_name, qty in insumos_activos.items():
+            for insumo_name, qty in insumos_activos:
                 item_match = st.session_state.catalog[st.session_state.catalog["Nombre"] == insumo_name]
                 if not item_match.empty:
                     precio_unitario = float(item_match.iloc[0]["Costo Material (S/)"])
@@ -377,29 +396,24 @@ with tab_builder:
                     with c1:
                         st.markdown(f"**{insumo_name}**\n<small style='color:#666;'>Costo Unit: S/ {precio_unitario:.2f}</small>", unsafe_allow_html=True)
                     with c2:
-                        # Usamos la misma clave o leemos directamente del session_state para mantener la sincronía
-                        val_input = st.number_input(
+                        k_ins_name = f"cart_ins_{insumo_name}"
+                        st.number_input(
                             "Cant Insumo", 
                             min_value=0, 
                             value=int(qty), 
-                            key=f"cart_ins_{insumo_name}", 
-                            label_visibility="collapsed"
+                            key=k_ins_name, 
+                            label_visibility="collapsed",
+                            on_change=update_insumo,
+                            args=(insumo_name, k_ins_name)
                         )
-                        # Si cambia la cantidad en la interfaz, actualizamos st.session_state de forma inmediata
-                        if val_input != qty:
-                            st.session_state.insumos_seleccionados[insumo_name] = val_input
-                            st.rerun()
-                            
                     with c3:
                         st.markdown(f"**S/ {cm_subtotal:.2f}**")
                     with c4:
-                        if st.button("🗑️", key=f"del_ins_{insumo_name}"):
-                            st.session_state.insumos_seleccionados[insumo_name] = 0
-                            st.rerun()
+                        st.button("🗑️", key=f"del_ins_{insumo_name}", on_click=remove_insumo, args=(insumo_name,))
         else:
             st.caption("No hay insumos agregados. Puedes usar el botón 'Empaque Automático' en la barra lateral.")
 
-        if st.session_state.cart or any(cant > 0 for cant in st.session_state.insumos_seleccionados.values()):
+        if st.session_state.cart or insumos_activos:
             st.write("")
             c_clear, _ = st.columns([1.5, 3])
             with c_clear:
@@ -475,7 +489,6 @@ with tab_builder:
         with col_c2:
             nombre_ramo = st.text_input("Concepto / Ramo:", value="Ramo Personalizado")
             
-        # FORMATO PROFESIONAL DE COTIZACIÓN (Muestra solo las piezas principales al cliente)
         resumen_txt = f"✨ *COTIZACIÓN ARTESANAL* ✨\n"
         resumen_txt += f"💐 *Arreglo:* {nombre_ramo}\n"
         resumen_txt += f"👤 *Cliente:* {nombre_cliente}\n"
@@ -541,19 +554,18 @@ with tab_insumos:
                     st.markdown(f"**{nombre}**")
                     st.caption(f"Costo: **S/ {precio_unitario:.2f}** c/u")
                     
-                    new_qty = st.number_input(
+                    k_tab2 = f"tab2_insumo_qty_{item['ID']}"
+                    st.number_input(
                         "Cantidad:",
                         min_value=0,
                         value=cant_actual,
                         step=1,
-                        key=f"tab2_insumo_qty_{item['ID']}"
+                        key=k_tab2,
+                        on_change=update_insumo,
+                        args=(nombre, k_tab2)
                     )
                     
-                    if new_qty != cant_actual:
-                        st.session_state.insumos_seleccionados[nombre] = new_qty
-                        st.rerun()
-                        
-                    if new_qty > 0:
+                    if cant_actual > 0:
                         st.markdown(f"<span style='color:#2e7d32; font-weight:600;'>Subtotal: S/ {subtotal:.2f}</span>", unsafe_allow_html=True)
 
 # ==============================================================================
