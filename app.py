@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 import os
+from datetime import datetime
 
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(
@@ -14,14 +15,12 @@ st.set_page_config(
 # --- ESTILOS CSS PERSONALIZADOS ---
 custom_css = """
 <style>
-    /* Estilos generales y fuentes */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
     
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
-    /* Headers personalizados */
     .main-header {
         background: linear-gradient(135deg, #FF6B8B 0%, #D83A6F 100%);
         padding: 1.8rem 2rem;
@@ -42,7 +41,6 @@ custom_css = """
         font-size: 1rem;
     }
 
-    /* Cards KPI Financieras */
     .kpi-card {
         background: var(--background-secondary-color, #f8f9fa);
         border: 1px solid rgba(128, 128, 128, 0.2);
@@ -96,7 +94,6 @@ custom_css = """
         margin: 0.2rem 0;
     }
 
-    /* Botones y Tablas */
     .stButton>button {
         border-radius: 10px;
         font-weight: 600;
@@ -105,8 +102,9 @@ custom_css = """
 """
 st.markdown(custom_css, unsafe_allow_html=True)
 
-# --- ARCHIVO DE PERSISTENCIA ---
+# --- ARCHIVOS DE PERSISTENCIA ---
 CSV_FILE = "catalogo_materiales.csv"
+HISTORIAL_FILE = "historial_pedidos.csv"
 
 # LISTA CON DESGLOSE DETALLADO POR DEFECTO
 DEFAULT_DATA = [
@@ -117,16 +115,13 @@ DEFAULT_DATA = [
     {"ID": "LP08", "Nombre": "Manzanilla / Margarita (Limpiapipas)", "Categoría": "Limpiapipas", "Costo Material (S/)": 0.30, "Tiempo (min)": 5, "Descripción": "Tiempos: Pétalos/centro 3m, armado 2m"},
     {"ID": "LP07", "Nombre": "Coneja (Limpiapipas)", "Categoría": "Limpiapipas", "Costo Material (S/)": 1.40, "Tiempo (min)": 22, "Descripción": "Detalles faciales y vestimenta base"},
     {"ID": "LP09", "Nombre": "Lirio (Limpiapipas)", "Categoría": "Limpiapipas", "Costo Material (S/)": 0.50, "Tiempo (min)": 20, "Descripción": "Armado de estambre y pétalos triples"},
-    
     {"ID": "CR01", "Nombre": "Rosa Tejida (Crochet)", "Categoría": "Crochet", "Costo Material (S/)": 1.20, "Tiempo (min)": 45, "Descripción": "Hilo algodón, relleno, palito"},
     {"ID": "CR02", "Nombre": "Tulipán (Crochet)", "Categoría": "Crochet", "Costo Material (S/)": 0.80, "Tiempo (min)": 30, "Descripción": "Tejido estándar en hilo industrial"},
-    
     {"ID": "AM01", "Nombre": "Abejita Amigurumi", "Categoría": "Amigurumis", "Costo Material (S/)": 2.10, "Tiempo (min)": 60, "Descripción": "Tejido completo, ojos de seguridad, bordado"},
     {"ID": "AM02", "Nombre": "Snoopy Amigurumi", "Categoría": "Amigurumis", "Costo Material (S/)": 2.25, "Tiempo (min)": 60, "Descripción": "Tejido completo, ojos de seguridad, bordado"},
     {"ID": "AM03", "Nombre": "Shrek Amigurumi", "Categoría": "Amigurumis", "Costo Material (S/)": 2.25, "Tiempo (min)": 60, "Descripción": "Tejido completo, detalles en fieltro/bordado"},
     {"ID": "AM04", "Nombre": "Pollito Amigurumi", "Categoría": "Amigurumis", "Costo Material (S/)": 2.25, "Tiempo (min)": 60, "Descripción": "Tejido completo, detalles en pico y patitas"},
     {"ID": "AM05", "Nombre": "Cristiano Amigurumi", "Categoría": "Amigurumis", "Costo Material (S/)": 2.25, "Tiempo (min)": 60, "Descripción": "Tejido personalizado con camiseta y detalles"},
-
     {"ID": "INS01", "Nombre": "Alambre", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.20, "Tiempo (min)": 0, "Descripción": "Soporte de tallo"},
     {"ID": "INS02", "Nombre": "Base", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.70, "Tiempo (min)": 0, "Descripción": "Estructura de ramo"},
     {"ID": "INS03", "Nombre": "Biruta", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 1.20, "Tiempo (min)": 0, "Descripción": "Relleno protector"},
@@ -152,24 +147,19 @@ DEFAULT_DATA = [
     {"ID": "INS23", "Nombre": "Papel Leche", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.92, "Tiempo (min)": 0, "Descripción": "Pliego de envoltura mate premium"},
 ]
 
-# --- CARGA Y SANITIZACIÓN DE DATOS (CORRECCIÓN DE ERROR DE TIPO) ---
+# --- CARGA Y SANITIZACIÓN DE DATOS ---
 def load_and_fix_catalog():
     if os.path.exists(CSV_FILE):
         try:
             df = pd.read_csv(CSV_FILE)
-            # 1. Asegurar columna Descripción
             if "Descripción" not in df.columns:
                 df["Descripción"] = ""
-            
-            # 2. SANITIZACIÓN CLAVE: Convertir la columna 'Descripción' estrictamente a string/texto
-            # Esto evita el StreamlitAPIException "not compatible for editing underlying data type FLOAT"
             df["Descripción"] = df["Descripción"].fillna("").astype(str)
             df["Nombre"] = df["Nombre"].fillna("").astype(str)
             df["Categoría"] = df["Categoría"].fillna("Empaque / Ensamble").astype(str)
             df["ID"] = df["ID"].fillna("GEN").astype(str)
             df["Costo Material (S/)"] = pd.to_numeric(df["Costo Material (S/)"], errors="coerce").fillna(0.0)
             df["Tiempo (min)"] = pd.to_numeric(df["Tiempo (min)"], errors="coerce").fillna(0).astype(int)
-            
             return df
         except Exception:
             df = pd.DataFrame(DEFAULT_DATA)
@@ -182,18 +172,32 @@ def load_and_fix_catalog():
         return df
 
 def save_catalog(df):
-    # Forzar sanitización antes de guardar
     df["Descripción"] = df["Descripción"].fillna("").astype(str)
     df.to_csv(CSV_FILE, index=False)
     st.session_state.catalog = df
 
+def save_order_to_history(cliente, ramo, costo_base, precio_venta, ganancia, items):
+    order_data = {
+        "Fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "Cliente": cliente,
+        "Asunto/Ramo": ramo,
+        "Costo Base (S/)": f"{costo_base:.2f}",
+        "Precio Venta (S/)": f"{precio_venta:.2f}",
+        "Ganancia (S/)": f"{ganancia:.2f}",
+        "Detalle": items
+    }
+    if os.path.exists(HISTORIAL_FILE):
+        df_h = pd.read_csv(HISTORIAL_FILE)
+        df_h = pd.concat([df_h, pd.DataFrame([order_data])], ignore_index=True)
+    else:
+        df_h = pd.DataFrame([order_data])
+    df_h.to_csv(HISTORIAL_FILE, index=False)
+
 # --- INICIALIZACIÓN DE ESTADO ---
 if "catalog" not in st.session_state:
     st.session_state.catalog = load_and_fix_catalog()
-
 if "cart" not in st.session_state:
     st.session_state.cart = {}
-
 if "insumos_seleccionados" not in st.session_state:
     st.session_state.insumos_seleccionados = {}
 
@@ -227,7 +231,7 @@ with st.sidebar:
             max_value=3.0,
             value=1.35,
             step=0.05,
-            help="1.30 equivale a un 30% de margen comercial sobre costos"
+            help="1.35 equivale a un 35% de margen comercial sobre costos"
         )
 
     with st.container(border=True):
@@ -235,19 +239,56 @@ with st.sidebar:
         tiempo_ensamble = st.number_input(
             "Empaque y Arreglo (min)",
             min_value=0,
-            value=120,
+            value=30,
             step=5,
             help="Tiempo estimado para armado de base, envoltorio y lazo"
         )
 
     st.divider()
-    st.caption("✨ *Sistema de Cotización Artesanal v1.0*")
+    st.subheader("🤖 Empaque Automático")
+    if st.button("🪄 Cargar Insumos Estándar de Ramo", use_container_width=True):
+        total_flores = sum(st.session_state.cart.values()) if st.session_state.cart else 1
+
+        insumos_automaticos = {
+            "Alambre": 1,
+            "Base": 1,
+            "Biruta": 1,
+            "Blonda": 1,
+            "Bolsa/Empaque": 1,
+            "Brochetas": total_flores,
+            "Floratei": total_flores,
+            "Caja": 1,
+            "Cinta adhesiva": 1,
+            "Cinta gruesa/grande": 1,
+            "Cinta satinada": 1,
+            "Cinta de caja": 1,
+            "Dulce": 1,
+            "Ganchito": 1,
+            "Limpiapipas (Insumo)": 1,
+            "Tarjeta dedicatoria": 1,
+            "Tarjeta dulce": 1,
+            "Tarjeta hang tag": 1,
+            "Tarjeta mensaje": 1,
+            "Uso": 1,
+            "Papel Coreano": 3,  # Carga 3 por defecto
+            "Papel Leche": 1
+        }
+        
+        for insumo, cant in insumos_automaticos.items():
+            st.session_state.insumos_seleccionados[insumo] = cant
+            
+        st.toast(f"¡Insumos cargados! (Papel Coreano: 3 pliegos | {total_flores} brochetas y floratei)", icon="🪄")
+        st.rerun()
+
+    st.divider()
+    st.caption("✨ *Sistema de Cotización Artesanal v2.0*")
 
 # --- PESTAÑAS PRINCIPALES ---
-tab_builder, tab_insumos, tab_catalog = st.tabs([
+tab_builder, tab_insumos, tab_history, tab_catalog = st.tabs([
     "💐 1. Armar Composición / Cotizar", 
     "📦 2. Seleccionar Insumos y Empaque", 
-    "🗃️ 3. Catálogo de Recetas y Costos"
+    "📜 3. Historial de Ventas",
+    "🗃️ 4. Catálogo de Recetas y Costos"
 ])
 
 # ==============================================================================
@@ -259,7 +300,6 @@ with tab_builder:
     with col_builder:
         st.subheader("Añadir Piezas al Ramo")
         
-        # Filtrar solo elementos principales (excluir insumos)
         df_flores = st.session_state.catalog[st.session_state.catalog["Categoría"] != "Empaque / Ensamble"]
         
         c_item, c_qty, c_btn = st.columns([3, 1.2, 1.2], vertical_alignment="bottom")
@@ -273,66 +313,84 @@ with tab_builder:
             cantidad = st.number_input("Cantidad:", min_value=1, value=1, step=1)
         with c_btn:
             if st.button("➕ Añadir", use_container_width=True, type="primary"):
-                if selected_item_name in st.session_state.cart:
-                    st.session_state.cart[selected_item_name] += cantidad
-                else:
-                    st.session_state.cart[selected_item_name] = cantidad
+                st.session_state.cart[selected_item_name] = st.session_state.cart.get(selected_item_name, 0) + cantidad
                 st.toast(f"Añadido: {cantidad}x {selected_item_name}", icon="✅")
 
         st.divider()
-        st.subheader("🛒 Resumen de Elementos Agregados")
+        st.subheader("🛒 Resumen y Modificación del Pedido")
+        st.caption("Ajusta las cantidades o elimina elementos directamente desde este panel.")
         
-        cart_data = []
         cm_flores = 0.0
         tiempo_flores_min = 0
+        items_piezas_cliente = []  # Solo flores para la cotización final del cliente
         
-        # 1. Procesar flores en carrito
-        for item_name, qty in list(st.session_state.cart.items()):
-            item_match = st.session_state.catalog[st.session_state.catalog["Nombre"] == item_name]
-            if not item_match.empty:
-                precio_unitario = float(item_match.iloc[0]["Costo Material (S/)"])
-                tiempo_unitario = int(item_match.iloc[0]["Tiempo (min)"])
-                descripcion = str(item_match.iloc[0]["Descripción"])
-                
-                cm_subtotal = precio_unitario * qty
-                t_subtotal = tiempo_unitario * qty
-                cm_flores += cm_subtotal
-                tiempo_flores_min += t_subtotal
-                
-                cart_data.append({
-                    "Categoría": "🌸 Pieza",
-                    "Elemento": item_name,
-                    "Cant.": int(qty),
-                    "Costo Mat.": f"S/ {cm_subtotal:.2f}",
-                    "Tiempo Total": f"{t_subtotal} min",
-                    "Receta / Detalles": descripcion
-                })
-        
-        # 2. Procesar insumos en carrito
+        # 1. SECCIÓN DE PIEZAS Y FLORES (MODIFICABLE)
+        st.markdown("##### 🌸 Piezas y Flores Principal")
+        if st.session_state.cart:
+            for item_name, qty in list(st.session_state.cart.items()):
+                item_match = st.session_state.catalog[st.session_state.catalog["Nombre"] == item_name]
+                if not item_match.empty:
+                    precio_unitario = float(item_match.iloc[0]["Costo Material (S/)"])
+                    tiempo_unitario = int(item_match.iloc[0]["Tiempo (min)"])
+                    
+                    cm_subtotal = precio_unitario * qty
+                    t_subtotal = tiempo_unitario * qty
+                    cm_flores += cm_subtotal
+                    tiempo_flores_min += t_subtotal
+                    
+                    items_piezas_cliente.append({"nombre": item_name, "cant": qty})
+                    
+                    c1, c2, c3, c4 = st.columns([3, 2, 1, 0.5])
+                    with c1:
+                        st.markdown(f"**{item_name}**\n<small style='color:#666;'>Cost. Mat: S/ {cm_subtotal:.2f} | Tiempo: {t_subtotal} min</small>", unsafe_allow_html=True)
+                    with c2:
+                        new_qty = st.number_input("Cant", min_value=1, value=int(qty), key=f"cart_qty_{item_name}", label_visibility="collapsed")
+                        st.session_state.cart[item_name] = new_qty
+                    with c3:
+                        st.markdown(f"**S/ {cm_subtotal:.2f}**")
+                    with c4:
+                        if st.button("🗑️", key=f"del_cart_{item_name}"):
+                            del st.session_state.cart[item_name] = new_qty
+                            st.rerun()
+        else:
+            st.info("No hay flores agregadas todavía.")
+
+        st.divider()
+
+        # 2. SECCIÓN DE INSUMOS SELECCIONADOS (MODIFICABLE)
+        st.markdown("##### 📦 Insumos y Empaque Seleccionados")
         cm_insumos = 0.0
-        for insumo_name, qty in st.session_state.insumos_seleccionados.items():
-            if qty > 0:
+        insumos_activos = {k: v for k, v in st.session_state.insumos_seleccionados.items() if v > 0}
+        
+        if insumos_activos:
+            for insumo_name, qty in list(insumos_activos.items()):
                 item_match = st.session_state.catalog[st.session_state.catalog["Nombre"] == insumo_name]
                 if not item_match.empty:
                     precio_unitario = float(item_match.iloc[0]["Costo Material (S/)"])
                     cm_subtotal = precio_unitario * qty
                     cm_insumos += cm_subtotal
                     
-                    cart_data.append({
-                        "Categoría": "📦 Insumo",
-                        "Elemento": insumo_name,
-                        "Cant.": int(qty),
-                        "Costo Mat.": f"S/ {cm_subtotal:.2f}",
-                        "Tiempo Total": "-",
-                        "Receta / Detalles": "Empaque / Armado"
-                    })
-
-        if not cart_data:
-            st.info("El pedido está actualmente vacío. Selecciona flores arriba o insumos en la pestaña 2.")
+                    c1, c2, c3, c4 = st.columns([3, 2, 1, 0.5])
+                    with c1:
+                        st.markdown(f"**{insumo_name}**\n<small style='color:#666;'>Costo Unit: S/ {precio_unitario:.2f}</small>", unsafe_allow_html=True)
+                    with c2:
+                        new_qty = st.number_input("Cant Insumo", min_value=0, value=int(qty), key=f"cart_ins_{insumo_name}", label_visibility="collapsed")
+                        if new_qty == 0:
+                            del st.session_state.insumos_seleccionados[insumo_name]
+                            st.rerun()
+                        else:
+                            st.session_state.insumos_seleccionados[insumo_name] = new_qty
+                    with c3:
+                        st.markdown(f"**S/ {cm_subtotal:.2f}**")
+                    with c4:
+                        if st.button("🗑️", key=f"del_ins_{insumo_name}"):
+                            del st.session_state.insumos_seleccionados[insumo_name]
+                            st.rerun()
         else:
-            df_cart = pd.DataFrame(cart_data)
-            st.dataframe(df_cart, use_container_width=True, hide_index=True)
-            
+            st.caption("No hay insumos agregados. Puedes usar el botón 'Empaque Automático' en la barra lateral.")
+
+        if st.session_state.cart or insumos_activos:
+            st.write("")
             c_clear, _ = st.columns([1.5, 3])
             with c_clear:
                 if st.button("🗑️ Vaciar Todo el Pedido", use_container_width=True):
@@ -343,7 +401,6 @@ with tab_builder:
     with col_summary:
         st.subheader("📊 Métricas Financieras")
         
-        # Cálculos Consolidados
         cm_total = cm_flores + cm_insumos
         tiempo_total_min = tiempo_flores_min + tiempo_ensamble
         horas_totales = tiempo_total_min / 60.0
@@ -352,7 +409,9 @@ with tab_builder:
         precio_final = costo_base * factor_ganancia
         ganancia_neta = precio_final - costo_base
 
-        # Render de Tarjetas KPI
+        if factor_ganancia < 1.15:
+            st.warning("⚠️ El margen actual es menor al 15%. Considera ajustarlo para asegurar ganancias adecuadas.")
+
         k1, k2 = st.columns(2)
         with k1:
             st.markdown(f"""
@@ -406,28 +465,40 @@ with tab_builder:
         with col_c2:
             nombre_ramo = st.text_input("Concepto / Ramo:", value="Ramo Personalizado")
             
-        # GENERACIÓN DE TEXTO LIMPIO (Exclusivo para el cliente)
-        resumen_txt = f"*COTIZACIÓN - {nombre_ramo.upper()}*\n"
+        # FORMATO PROFESIONAL DE COTIZACIÓN (Solo muestra piezas/flores principales)
+        resumen_txt = f"✨ *COTIZACIÓN ARTESANAL* ✨\n"
+        resumen_txt += f"💐 *Arreglo:* {nombre_ramo}\n"
         resumen_txt += f"👤 *Cliente:* {nombre_cliente}\n"
-        resumen_txt += "-----------------------------------\n"
-        resumen_txt += "*Flores y Piezas:*\n"
+        resumen_txt += "━━━━━━━━━━━━━━━━━━━\n"
+        resumen_txt += "📋 *Detalle del Pedido:*\n"
         
-        if st.session_state.cart:
-            for item_name, qty in st.session_state.cart.items():
-                resumen_txt += f"• {qty}x {item_name}\n"
+        if items_piezas_cliente:
+            for item in items_piezas_cliente:
+                resumen_txt += f"  • {item['cant']}x {item['nombre']}\n"
         else:
-            resumen_txt += "• Sin piezas seleccionadas\n"
+            resumen_txt += "  • Sin flores o piezas seleccionadas\n"
             
-        resumen_txt += "-----------------------------------\n"
+        resumen_txt += "━━━━━━━━━━━━━━━━━━━\n"
+        resumen_txt += "🎁 *Incluye:* Empaque de regalo decorativo y tarjeta dedicatoria.\n\n"
         resumen_txt += f"💰 *PRECIO TOTAL:* *S/ {precio_final:.2f}*\n\n"
-        resumen_txt += "¡Gracias por valorar el trabajo artesanal! 🌸✨"
+        resumen_txt += "🌸 *Cada pieza es elaborada 100% a mano con amor y dedicación.* 🎨"
 
-        st.text_area("Ficha de texto (Vista previa):", value=resumen_txt, height=180)
+        st.text_area("Ficha de texto (Vista previa para cliente):", value=resumen_txt, height=210)
         
         encoded_message = urllib.parse.quote(resumen_txt)
         ws_url = f"https://api.whatsapp.com/send?text={encoded_message}"
         
-        st.link_button("📲 Enviar Cotización por WhatsApp", ws_url, use_container_width=True, type="primary")
+        c_ws, c_save = st.columns(2)
+        with c_ws:
+            st.link_button("📲 Enviar WhatsApp", ws_url, use_container_width=True, type="primary")
+        with c_save:
+            if st.button("💾 Registrar Venta en Historial", use_container_width=True):
+                if items_piezas_cliente:
+                    items_summary = ", ".join([f"{i['cant']}x {i['nombre']}" for i in items_piezas_cliente])
+                    save_order_to_history(nombre_cliente, nombre_ramo, costo_base, precio_final, ganancia_neta, items_summary)
+                    st.success("¡Pedido registrado exitosamente en el historial!")
+                else:
+                    st.error("No se puede registrar un pedido sin flores/piezas.")
 
 # ==============================================================================
 # TAB 2: SELECCIÓN DE INSUMOS DE ARMADO
@@ -438,7 +509,6 @@ with tab_insumos:
     
     df_insumos = st.session_state.catalog[st.session_state.catalog["Categoría"] == "Empaque / Ensamble"]
     
-    # Buscador de insumos
     busqueda_insumo = st.text_input("🔍 Buscar Insumo:", "", placeholder="Ej. Papel, Cinta, Caja...")
     if busqueda_insumo:
         df_insumos = df_insumos[df_insumos["Nombre"].str.contains(busqueda_insumo, case=False, na=False)]
@@ -474,13 +544,34 @@ with tab_insumos:
                         st.markdown(f"<span style='color:#2e7d32; font-weight:600;'>Subtotal: S/ {subtotal:.2f}</span>", unsafe_allow_html=True)
 
 # ==============================================================================
-# TAB 3: CATÁLOGO DE PRECIOS Y EDICIÓN
+# TAB 3: HISTORIAL DE VENTAS Y REGISTRO
+# ==============================================================================
+with tab_history:
+    st.subheader("📜 Historial de Pedidos Cotizados y Vendidos")
+    if os.path.exists(HISTORIAL_FILE):
+        df_hist = pd.read_csv(HISTORIAL_FILE)
+        st.dataframe(df_hist, use_container_width=True)
+
+        col_h1, col_h2 = st.columns(2)
+        with col_h1:
+            total_ventas = pd.to_numeric(df_hist["Precio Venta (S/)"], errors="coerce").sum()
+            st.metric("Total Cotizado / Vendido", f"S/ {total_ventas:.2f}")
+        with col_h2:
+            total_ganancia = pd.to_numeric(df_hist["Ganancia (S/)"].str.replace("S/", ""), errors="coerce").sum()
+            st.metric("Ganancia Neta Est. Histórica", f"S/ {total_ganancia:.2f}")
+
+        csv_download = df_hist.to_csv(index=False).encode('utf-8')
+        st.download_button("📥 Descargar Historial (CSV)", data=csv_download, file_name="historial_pedidos.csv", mime="text/csv")
+    else:
+        st.info("Aún no se han registrado ventas o pedidos en el historial.")
+
+# ==============================================================================
+# TAB 4: CATÁLOGO DE PRECIOS Y EDICIÓN
 # ==============================================================================
 with tab_catalog:
     st.subheader("🗃️ Gestor de Recetas, Tiempos y Costos Unitarios")
     st.caption("Edita los valores directamente en la tabla. Agrega detalles de sub-tiempos o lista de materiales en la columna **'Descripción'**.")
     
-    # Forzar que la columna Descripción sea string en el dataframe actual antes del editor
     st.session_state.catalog["Descripción"] = st.session_state.catalog["Descripción"].fillna("").astype(str)
     
     edited_df = st.data_editor(
