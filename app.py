@@ -137,14 +137,15 @@ DEFAULT_DATA = [
     {"ID": "INS13", "Nombre": "Floratei", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.20, "Tiempo (min)": 0, "Descripción": "Cinta floral verde"},
     {"ID": "INS14", "Nombre": "Ganchito", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.33, "Tiempo (min)": 0, "Descripción": "Sostén de tarjetas"},
     {"ID": "INS15", "Nombre": "Limpiapipas (Insumo)", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.05, "Tiempo (min)": 0, "Descripción": "Insumo extra por unidad"},
-    {"ID": "INS16", "Nombre": "Tarjeta dedicatoria", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.56, "Tiempo (min)": 0, "Descripción": "Impresión en couché"},
-    {"ID": "INS17", "Nombre": "Tarjeta dulce", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.56, "Tiempo (min)": 0, "Descripción": "Etiqueta temática"},
-    {"ID": "INS18", "Nombre": "Tarjeta hang tag", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.56, "Tiempo (min)": 0, "Descripción": "Etiqueta colgante de marca"},
-    {"ID": "INS19", "Nombre": "Tarjeta mensaje", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.56, "Tiempo (min)": 0, "Descripción": "Tarjeta plegable mini"},
-    {"ID": "INS20", "Nombre": "Uso", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.50, "Tiempo (min)": 0, "Descripción": "Desgaste de herramientas"},
-    {"ID": "INS21", "Nombre": "Perlitas", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.06, "Tiempo (min)": 0, "Descripción": "Acentuación visual"},
-    {"ID": "INS22", "Nombre": "Papel Coreano", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.40, "Tiempo (min)": 0, "Descripción": "Pliego de envoltura impermeable"},
-    {"ID": "INS23", "Nombre": "Papel Leche", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.92, "Tiempo (min)": 0, "Descripción": "Pliego de envoltura mate premium"},
+    {"ID": "INS16", "Nombre": "Perlitas", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.06, "Tiempo (min)": 0, "Descripción": "Acentuación visual"},
+    {"ID": "INS17", "Nombre": "Papel Coreano", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.40, "Tiempo (min)": 0, "Descripción": "Pliego de envoltura impermeable"},
+    {"ID": "INS18", "Nombre": "Papel Leche", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.92, "Tiempo (min)": 0, "Descripción": "Pliego de envoltura mate premium"},
+    {"ID": "INS19", "Nombre": "Tarjeta dedicatoria", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.56, "Tiempo (min)": 0, "Descripción": "Impresión en couché"},
+    {"ID": "INS20", "Nombre": "Tarjeta dulce", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.56, "Tiempo (min)": 0, "Descripción": "Etiqueta temática"},
+    {"ID": "INS21", "Nombre": "Tarjeta hang tag", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.56, "Tiempo (min)": 0, "Descripción": "Etiqueta colgante de marca"},
+    {"ID": "INS22", "Nombre": "Tarjeta mensaje", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.56, "Tiempo (min)": 0, "Descripción": "Tarjeta plegable mini"},
+    {"ID": "INS23", "Nombre": "Uso", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.50, "Tiempo (min)": 0, "Descripción": "Desgaste de herramientas"},
+
 ]
 
 # --- CARGA Y SANITIZACIÓN DE DATOS ---
@@ -279,13 +280,14 @@ with st.sidebar:
             "Dulce": 1,
             "Ganchito": 1,
             "Limpiapipas (Insumo)": 1,
+            "Perlitas": 1,
+            "Papel Coreano": 3,
+            "Papel Leche": 1,
             "Tarjeta dedicatoria": 1,
             "Tarjeta dulce": 1,
             "Tarjeta hang tag": 1,
             "Tarjeta mensaje": 1,
             "Uso": 1,
-            "Papel Coreano": 3,
-            "Papel Leche": 1
         }
         
         for insumo, cant in insumos_automaticos.items():
