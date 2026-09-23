@@ -358,16 +358,15 @@ with tab_builder:
 
         st.divider()
 
-        # 2. SECCIÓN DE INSUMOS SELECCIONADOS (MODIFICABLE Y ESTABLE)
+# 2. SECCIÓN DE INSUMOS SELECCIONADOS (CORREGIDO)
         st.markdown("##### 📦 Insumos y Empaque Seleccionados")
         cm_insumos = 0.0
-        insumos_para_iterar = list(st.session_state.insumos_seleccionados.items())
         
-        if any(cant > 0 for _, cant in insumos_para_iterar):
-            for insumo_name, qty in insumos_para_iterar:
-                if qty <= 0:
-                    continue
-                    
+        # Filtramos solo los insumos con cantidad mayor a 0
+        insumos_activos = {k: v for k, v in st.session_state.insumos_seleccionados.items() if v > 0}
+        
+        if insumos_activos:
+            for insumo_name, qty in insumos_activos.items():
                 item_match = st.session_state.catalog[st.session_state.catalog["Nombre"] == insumo_name]
                 if not item_match.empty:
                     precio_unitario = float(item_match.iloc[0]["Costo Material (S/)"])
@@ -378,14 +377,19 @@ with tab_builder:
                     with c1:
                         st.markdown(f"**{insumo_name}**\n<small style='color:#666;'>Costo Unit: S/ {precio_unitario:.2f}</small>", unsafe_allow_html=True)
                     with c2:
-                        new_qty = st.number_input(
+                        # Usamos la misma clave o leemos directamente del session_state para mantener la sincronía
+                        val_input = st.number_input(
                             "Cant Insumo", 
                             min_value=0, 
                             value=int(qty), 
                             key=f"cart_ins_{insumo_name}", 
                             label_visibility="collapsed"
                         )
-                        st.session_state.insumos_seleccionados[insumo_name] = new_qty
+                        # Si cambia la cantidad en la interfaz, actualizamos st.session_state de forma inmediata
+                        if val_input != qty:
+                            st.session_state.insumos_seleccionados[insumo_name] = val_input
+                            st.rerun()
+                            
                     with c3:
                         st.markdown(f"**S/ {cm_subtotal:.2f}**")
                     with c4:
@@ -542,10 +546,13 @@ with tab_insumos:
                         min_value=0,
                         value=cant_actual,
                         step=1,
-                        key=f"insumo_qty_{item['ID']}"
+                        key=f"tab2_insumo_qty_{item['ID']}"
                     )
-                    st.session_state.insumos_seleccionados[nombre] = new_qty
                     
+                    if new_qty != cant_actual:
+                        st.session_state.insumos_seleccionados[nombre] = new_qty
+                        st.rerun()
+                        
                     if new_qty > 0:
                         st.markdown(f"<span style='color:#2e7d32; font-weight:600;'>Subtotal: S/ {subtotal:.2f}</span>", unsafe_allow_html=True)
 
