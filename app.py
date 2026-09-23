@@ -350,7 +350,7 @@ with tab_builder:
                         st.markdown(f"**S/ {cm_subtotal:.2f}**")
                     with c4:
                         if st.button("🗑️", key=f"del_cart_{item_name}"):
-                            del st.session_state.cart[item_name] = new_qty
+                            del st.session_state.cart[item_name]
                             st.rerun()
         else:
             st.info("No hay flores agregadas todavía.")
