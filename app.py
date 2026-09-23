@@ -324,36 +324,46 @@ with tab_builder:
         tiempo_flores_min = 0
         items_piezas_cliente = []  # Solo flores para la cotización final del cliente
         
-        # 1. SECCIÓN DE PIEZAS Y FLORES (MODIFICABLE)
-        st.markdown("##### 🌸 Piezas y Flores Principal")
-        if st.session_state.cart:
-            for item_name, qty in list(st.session_state.cart.items()):
-                item_match = st.session_state.catalog[st.session_state.catalog["Nombre"] == item_name]
+# 2. SECCIÓN DE INSUMOS SELECCIONADOS (MODIFICABLE Y ESTABLE)
+        st.markdown("##### 📦 Insumos y Empaque Seleccionados")
+        cm_insumos = 0.0
+        
+        # Copiamos las llaves para iterar sin modificar el diccionario durante el bucle
+        insumos_para_iterar = list(st.session_state.insumos_seleccionados.items())
+        
+        if any(cant > 0 for _, cant in insumos_para_iterar):
+            for insumo_name, qty in insumos_para_iterar:
+                if qty <= 0:
+                    continue
+                    
+                item_match = st.session_state.catalog[st.session_state.catalog["Nombre"] == insumo_name]
                 if not item_match.empty:
                     precio_unitario = float(item_match.iloc[0]["Costo Material (S/)"])
-                    tiempo_unitario = int(item_match.iloc[0]["Tiempo (min)"])
-                    
                     cm_subtotal = precio_unitario * qty
-                    t_subtotal = tiempo_unitario * qty
-                    cm_flores += cm_subtotal
-                    tiempo_flores_min += t_subtotal
-                    
-                    items_piezas_cliente.append({"nombre": item_name, "cant": qty})
+                    cm_insumos += cm_subtotal
                     
                     c1, c2, c3, c4 = st.columns([3, 2, 1, 0.5])
                     with c1:
-                        st.markdown(f"**{item_name}**\n<small style='color:#666;'>Cost. Mat: S/ {cm_subtotal:.2f} | Tiempo: {t_subtotal} min</small>", unsafe_allow_html=True)
+                        st.markdown(f"**{insumo_name}**\n<small style='color:#666;'>Costo Unit: S/ {precio_unitario:.2f}</small>", unsafe_allow_html=True)
                     with c2:
-                        new_qty = st.number_input("Cant", min_value=1, value=int(qty), key=f"cart_qty_{item_name}", label_visibility="collapsed")
-                        st.session_state.cart[item_name] = new_qty
+                        new_qty = st.number_input(
+                            "Cant Insumo", 
+                            min_value=0, 
+                            value=int(qty), 
+                            key=f"cart_ins_{insumo_name}", 
+                            label_visibility="collapsed"
+                        )
+                        # Actualizamos la cantidad en el estado persistente
+                        st.session_state.insumos_seleccionados[insumo_name] = new_qty
+                        
                     with c3:
                         st.markdown(f"**S/ {cm_subtotal:.2f}**")
                     with c4:
-                        if st.button("🗑️", key=f"del_cart_{item_name}"):
-                            del st.session_state.cart[item_name]
+                        if st.button("🗑️", key=f"del_ins_{insumo_name}"):
+                            st.session_state.insumos_seleccionados[insumo_name] = 0
                             st.rerun()
         else:
-            st.info("No hay flores agregadas todavía.")
+            st.caption("No hay insumos agregados. Puedes usar el botón 'Empaque Automático' en la barra lateral.")
 
         st.divider()
 
