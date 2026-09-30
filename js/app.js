@@ -3,6 +3,16 @@
  * Módulos: State, Financials, UI, Handlers, Toast
  */
 
+// CATÁLOGO INICIAL DE RESPALDO (POR SI NO EXISTE CATALOG.JSON)
+const DEFAULT_INITIAL_CATALOG = [
+    { "ID": "LP01", "Nombre": "Rosa Clásica (Limpiapipas)", "Categoría": "Limpiapipas", "Costo Material (S/)": 1.20, "Tiempo (min)": 25, "Descripción": "3 limpiapipas rojos, 1 verde, alambre fino" },
+    { "ID": "LP02", "Nombre": "Girasol Grande (Limpiapipas)", "Categoría": "Limpiapipas", "Costo Material (S/)": 1.80, "Tiempo (min)": 35, "Descripción": "5 limpiapipas amarillos, centro marrón" },
+    { "ID": "CR01", "Nombre": "Tulipán Crochet", "Categoría": "Crochet", "Costo Material (S/)": 2.50, "Tiempo (min)": 45, "Descripción": "Hilado de algodón, relleno sintético" },
+    { "ID": "AM01", "Nombre": "Oso Amigurumi Mediano", "Categoría": "Amigurumis", "Costo Material (S/)": 6.50, "Tiempo (min)": 120, "Descripción": "Lana antialérgica, ojos de seguridad" },
+    { "ID": "INS01", "Nombre": "Papel Coreano", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.80, "Tiempo (min)": 0, "Descripción": "Pliego impermeable rosa/blanco" },
+    { "ID": "INS02", "Nombre": "Cinta Satinada", "Categoría": "Empaque / Ensamble", "Costo Material (S/)": 0.50, "Tiempo (min)": 0, "Descripción": "Moño decorativo 2.5cm" }
+];
+
 // MÓDULO 1: ESTADO DEL SISTEMA
 const State = {
     data: {
@@ -15,7 +25,7 @@ const State = {
             costoHora: 5.0,
             factorMargen: 1.20,
             tiempoEnsamble: 120,
-            porcentajeMerma: 5.0 // % de desperdicio por defecto
+            porcentajeMerma: 5.0
         }
     },
 
@@ -24,27 +34,41 @@ const State = {
         
         try {
             const response = await fetch('catalog.json');
-            this.data.defaultCatalog = await response.json();
-            
-            if (savedCatalog) {
-                this.data.catalog = JSON.parse(savedCatalog);
+            if (response.ok) {
+                this.data.defaultCatalog = await response.json();
             } else {
-                this.data.catalog = [...this.data.defaultCatalog];
+                this.data.defaultCatalog = [...DEFAULT_INITIAL_CATALOG];
             }
         } catch (error) {
-            console.error('Error cargando el catálogo predeterminado:', error);
-            if (savedCatalog) {
-                this.data.catalog = JSON.parse(savedCatalog);
-            }
+            console.warn('Uso de catálogo estático de respaldo por restricción de red/servidor:', error);
+            this.data.defaultCatalog = [...DEFAULT_INITIAL_CATALOG];
         }
 
-        this.data.cartFlowers = JSON.parse(localStorage.getItem('rubielle_cartFlowers')) || {};
-        this.data.cartInsumos = JSON.parse(localStorage.getItem('rubielle_cartInsumos')) || {};
-        this.data.history = JSON.parse(localStorage.getItem('rubielle_history')) || [];
+        if (savedCatalog) {
+            try {
+                this.data.catalog = JSON.parse(savedCatalog);
+            } catch (e) {
+                this.data.catalog = [...this.data.defaultCatalog];
+            }
+        } else {
+            this.data.catalog = [...this.data.defaultCatalog];
+        }
+
+        try {
+            this.data.cartFlowers = JSON.parse(localStorage.getItem('rubielle_cartFlowers')) || {};
+            this.data.cartInsumos = JSON.parse(localStorage.getItem('rubielle_cartInsumos')) || {};
+            this.data.history = JSON.parse(localStorage.getItem('rubielle_history')) || [];
+        } catch (e) {
+            this.data.cartFlowers = {};
+            this.data.cartInsumos = {};
+            this.data.history = [];
+        }
         
         const savedConfig = localStorage.getItem('rubielle_workshopConfig');
         if (savedConfig) {
-            this.data.workshopConfig = { ...this.data.workshopConfig, ...JSON.parse(savedConfig) };
+            try {
+                this.data.workshopConfig = { ...this.data.workshopConfig, ...JSON.parse(savedConfig) };
+            } catch (e) {}
         }
     },
 
@@ -57,7 +81,7 @@ const State = {
     }
 };
 
-// MÓDULO 2: MOTOR FINANCIERO Y CÁLCULOS
+// MÓDULO 2: MOTOR FINANCIERO
 const Financials = {
     calculate() {
         const config = State.data.workshopConfig;
@@ -81,8 +105,6 @@ const Financials = {
         });
 
         const subtotalMateriales = cmFlores + cmInsumos;
-        
-        // CÁLCULO DE MERMA / DESPERDICIO DE MATERIAL
         const mermaRate = config.porcentajeMerma || 0;
         const costoMerma = subtotalMateriales * (mermaRate / 100);
         const cmTotal = subtotalMateriales + costoMerma;
@@ -186,7 +208,7 @@ const UI = {
         flowers.forEach(item => {
             const opt = document.createElement('option');
             opt.value = item.Nombre;
-            opt.textContent = `${item.Nombre} (${item.Categoría}) - S/ ${item["Costo Material (S/)"].toFixed(2)}`;
+            opt.textContent = `${item.Nombre} (${item.Categoría}) - S/ ${(item["Costo Material (S/)"] || 0).toFixed(2)}`;
             select.appendChild(opt);
         });
 
@@ -211,7 +233,7 @@ const UI = {
             flowerEntries.forEach(([name, qty]) => {
                 totalCount += qty;
                 const match = State.data.catalog.find(i => i.Nombre === name);
-                const costUnit = match ? match["Costo Material (S/)"] : 0;
+                const costUnit = match ? (match["Costo Material (S/)"] || 0) : 0;
                 const subtotal = costUnit * qty;
 
                 const row = document.createElement('div');
@@ -247,7 +269,7 @@ const UI = {
             insumosEntries.forEach(([name, qty]) => {
                 totalCount += qty;
                 const match = State.data.catalog.find(i => i.Nombre === name);
-                const costUnit = match ? match["Costo Material (S/)"] : 0;
+                const costUnit = match ? (match["Costo Material (S/)"] || 0) : 0;
                 const subtotal = costUnit * qty;
 
                 const row = document.createElement('div');
@@ -303,7 +325,6 @@ const UI = {
         if (dispTiempo) dispTiempo.textContent = `${config.tiempoEnsamble} min`;
         if (dispMerma) dispMerma.textContent = `${config.porcentajeMerma || 0}%`;
 
-        // Métricas en la vista
         const elCostMat = document.getElementById('metric-costo-mat');
         if (elCostMat) elCostMat.textContent = `S/ ${results.cmTotal.toFixed(2)}`;
         
@@ -344,7 +365,8 @@ const UI = {
         container.innerHTML = '';
         insumos.forEach(item => {
             const qty = State.data.cartInsumos[item.Nombre] || 0;
-            const subtotal = qty * item["Costo Material (S/)"];
+            const unitCost = item["Costo Material (S/)"] || 0;
+            const subtotal = qty * unitCost;
 
             const card = document.createElement('div');
             card.className = "p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-rubielle-100 dark:border-slate-700 shadow-xs space-y-2";
@@ -352,7 +374,7 @@ const UI = {
                 <div class="flex justify-between items-start">
                     <div>
                         <h4 class="text-xs font-bold text-slate-dark dark:text-slate-100"></h4>
-                        <p class="text-[10px] text-slate-muted dark:text-slate-400">Costo: S/ ${item["Costo Material (S/)"].toFixed(2)}</p>
+                        <p class="text-[10px] text-slate-muted dark:text-slate-400">Costo: S/ ${unitCost.toFixed(2)}</p>
                     </div>
                     <span class="text-[10px] bg-rubielle-50 dark:bg-rubielle-900/50 text-rubielle-700 dark:text-rubielle-300 font-bold px-2 py-0.5 rounded-md">
                         Sub: S/ ${subtotal.toFixed(2)}
@@ -391,7 +413,7 @@ const UI = {
         const catFilter = catSelect ? catSelect.value : 'ALL';
 
         const filtered = State.data.catalog.filter(i => {
-            const matchSearch = i.Nombre.toLowerCase().includes(search) || i.ID.toLowerCase().includes(search) || (i.Descripción || '').toLowerCase().includes(search);
+            const matchSearch = (i.Nombre || '').toLowerCase().includes(search) || (i.ID || '').toLowerCase().includes(search) || (i.Descripción || '').toLowerCase().includes(search);
             const matchCat = (catFilter === 'ALL') || (i.Categoría === catFilter);
             return matchSearch && matchCat;
         });
@@ -399,12 +421,16 @@ const UI = {
         filtered.forEach(item => {
             const row = document.createElement('tr');
             row.className = "hover:bg-rubielle-50/50 dark:hover:bg-slate-800/50 transition-colors";
+            
+            const cost = item["Costo Material (S/)"] || 0;
+            const time = item["Tiempo (min)"] || 0;
+
             row.innerHTML = `
                 <td class="p-3 font-mono font-bold text-rubielle-700 dark:text-rubielle-300"></td>
                 <td class="p-3 font-bold text-slate-dark dark:text-slate-100"></td>
                 <td class="p-3"><span class="px-2 py-0.5 rounded-full bg-rubielle-100 dark:bg-rubielle-900/60 text-rubielle-700 dark:text-rubielle-300 text-[10px] font-bold"></span></td>
-                <td class="p-3 font-bold">S/ ${item["Costo Material (S/)"].toFixed(2)}</td>
-                <td class="p-3 font-bold">${item["Tiempo (min)"]} min</td>
+                <td class="p-3 font-bold">S/ ${cost.toFixed(2)}</td>
+                <td class="p-3 font-bold">${time} min</td>
                 <td class="p-3 text-[11px] text-slate-muted dark:text-slate-400"></td>
                 <td class="p-3 text-right space-x-1">
                     <button class="btn-edit p-1.5 text-slate-400 hover:text-rubielle-600 dark:hover:text-rubielle-400 transition-colors" title="Editar Elemento">
@@ -440,8 +466,8 @@ const UI = {
             tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-muted dark:text-slate-400 italic">Aún no se han registrado ventas en el historial.</td></tr>`;
         } else {
             State.data.history.forEach((item) => {
-                totalVentas += item.precioVenta;
-                totalGanancia += item.ganancia;
+                totalVentas += (item.precioVenta || 0);
+                totalGanancia += (item.ganancia || 0);
 
                 const row = document.createElement('tr');
                 row.className = "hover:bg-rubielle-50/50 dark:hover:bg-slate-800/50 transition-colors";
@@ -449,9 +475,9 @@ const UI = {
                     <td class="p-3 text-slate-muted dark:text-slate-400"></td>
                     <td class="p-3 font-bold text-slate-dark dark:text-slate-100"></td>
                     <td class="p-3 font-medium"></td>
-                    <td class="p-3">S/ ${item.costoBase.toFixed(2)}</td>
-                    <td class="p-3 font-bold text-rubielle-700 dark:text-rubielle-300">S/ ${item.precioVenta.toFixed(2)}</td>
-                    <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400">S/ ${item.ganancia.toFixed(2)}</td>
+                    <td class="p-3">S/ ${(item.costoBase || 0).toFixed(2)}</td>
+                    <td class="p-3 font-bold text-rubielle-700 dark:text-rubielle-300">S/ ${(item.precioVenta || 0).toFixed(2)}</td>
+                    <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400">S/ ${(item.ganancia || 0).toFixed(2)}</td>
                     <td class="p-3 text-[11px] text-slate-muted dark:text-slate-400"></td>
                     <td class="p-3 text-right">
                         <button class="btn-delete-rec p-1.5 text-slate-400 hover:text-rose-500 transition-colors" title="Eliminar Registro">
@@ -493,7 +519,7 @@ const UI = {
                 document.getElementById('edit-item-id').value = item.ID;
                 document.getElementById('edit-item-name').value = item.Nombre;
                 document.getElementById('edit-item-category').value = item.Categoría;
-                document.getElementById('edit-item-cost').value = item["Costo Material (S/)"];
+                document.getElementById('edit-item-cost').value = item["Costo Material (S/)"].toFixed(2);
                 document.getElementById('edit-item-time').value = item["Tiempo (min)"];
                 document.getElementById('edit-item-desc').value = item.Descripción || "";
             }
@@ -512,7 +538,7 @@ const UI = {
     }
 };
 
-// MÓDULO 4: MANEJADORES DE EVENTOS Y EVENTOS DE USUARIO
+// MÓDULO 4: MANEJADORES DE EVENTOS
 const Handlers = {
     handleWorkshopConfigChange() {
         const inputCostoHora = document.getElementById('input-costo-hora');
@@ -584,12 +610,9 @@ const Handlers = {
     loadDefaultPack() {
         const totalFlowers = Object.values(State.data.cartFlowers).reduce((a, b) => a + b, 0) || 1;
         State.data.cartInsumos = {
-            "Alambre": 1, "Base": 1, "Biruta": 1, "Blonda": 1, "Bolsa/Empaque": 1,
-            "Brochetas": totalFlowers, "Floratei": totalFlowers, "Caja": 1, "Cinta adhesiva": 1,
-            "Cinta gruesa/grande": 1, "Cinta satinada": 1, "Cinta de caja": 1, "Dulce": 1,
-            "Ganchito": 1, "Limpiapipas (Insumo)": 1, "Perlitas": 1, "Papel Coreano": 3,
-            "Papel Leche": 1, "Tarjeta dedicatoria": 1, "Tarjeta dulce": 1, "Tarjeta hang tag": 1,
-            "Tarjeta mensaje": 1, "Uso": 1
+            "Papel Coreano": 3,
+            "Cinta Satinada": 1,
+            "Tarjeta dedicatoria": 1
         };
         State.save();
         UI.renderCartItems();
@@ -646,16 +669,18 @@ const Handlers = {
         if (linkWA) linkWA.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(txt)}`;
     },
 
-    copyProformaToClipboard() {
+    async copyProformaToClipboard() {
         const textarea = document.getElementById('textarea-proforma');
         if (!textarea) return;
-        textarea.select();
-        navigator.clipboard.writeText(textarea.value).then(() => {
+
+        try {
+            await navigator.clipboard.writeText(textarea.value);
             Toast.show('Proforma copiada al portapapeles', 'success');
-        }).catch(() => {
+        } catch (err) {
+            textarea.select();
             document.execCommand('copy');
             Toast.show('Proforma copiada al portapapeles', 'success');
-        });
+        }
     },
 
     printProformaPDF() {
@@ -875,7 +900,7 @@ const Toast = {
     }
 };
 
-// INICIALIZACIÓN ASÍNCRONA Y EVENT LISTENERS
+// INICIALIZACIÓN ASÍNCRONA
 window.addEventListener('DOMContentLoaded', async () => {
     UI.initTheme();
     await State.init();
@@ -885,18 +910,4 @@ window.addEventListener('DOMContentLoaded', async () => {
     UI.renderCatalogTable();
     UI.renderHistoryTable();
     UI.renderFinancialSummary();
-
-    // Event Listener para el buscador de catálogo en el Cotizador
-    const searchPiezaInput = document.getElementById('input-search-pieza');
-    if (searchPiezaInput) {
-        searchPiezaInput.addEventListener('input', (e) => {
-            UI.populatePieceSelect(e.target.value);
-        });
-    }
-
-    // Event Listener para cambio del % de merma
-    const inputMerma = document.getElementById('input-porcentaje-merma');
-    if (inputMerma) {
-        inputMerma.addEventListener('input', Handlers.handleWorkshopConfigChange);
-    }
 });

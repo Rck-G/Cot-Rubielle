@@ -13,7 +13,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Tailwind CSS CDN con configuración DarkMode por clase -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -61,7 +61,7 @@
     </script>
 
     <!-- Custom CSS File -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-rubielle-200 selection:text-rubielle-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
 
@@ -98,14 +98,13 @@
                 </button>
             </nav>
 
-            <!-- Quick Info Badge, Dark Mode Toggle & Cart Item Count -->
+            <!-- Quick Info Badge & Theme Toggle -->
             <div class="flex items-center space-x-3">
                 <div class="hidden sm:flex items-center space-x-2 bg-rubielle-50 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-rubielle-200 dark:border-slate-700 text-xs text-rubielle-700 dark:text-rubielle-300 font-bold">
                     <i class="fa-solid fa-coins text-rubielle-500"></i>
                     <span>Soles (S/)</span>
                 </div>
 
-                <!-- DARK MODE TOGGLE BUTTON -->
                 <button id="theme-toggle-btn" onclick="UI.toggleTheme()" class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-800 border border-rubielle-200 dark:border-slate-700 flex items-center justify-center text-rubielle-600 dark:text-amber-400 shadow-xs hover:border-rubielle-400 transition-all">
                     <i id="theme-toggle-icon" class="fa-solid fa-moon text-sm"></i>
                 </button>
@@ -144,7 +143,6 @@
                     </p>
                 </div>
 
-                <!-- Hero Action Quick Shortcuts -->
                 <div class="flex flex-wrap items-center gap-2">
                     <button onclick="Handlers.clearAllOrder()" class="px-3.5 py-2 rounded-xl bg-white/90 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 text-slate-text dark:text-slate-200 text-xs font-bold transition-all border border-rubielle-200 dark:border-slate-700 shadow-xs flex items-center gap-1.5">
                         <i class="fa-solid fa-rotate text-rubielle-500"></i> Vaciar Cotización
@@ -162,10 +160,9 @@
         <!-- DASHBOARD CONTENT LAYOUT -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <!-- LEFT CONFIGURATION SIDEBAR (4 cols on lg) -->
+            <!-- LEFT CONFIGURATION SIDEBAR -->
             <aside class="lg:col-span-4 space-y-6">
                 
-                <!-- TALLER CONFIG CARD -->
                 <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90">
                     <div class="flex items-center justify-between pb-3 mb-4 border-b border-rubielle-100 dark:border-slate-700">
                         <h3 class="font-serif font-bold text-base text-rubielle-900 dark:text-rubielle-200 flex items-center gap-2">
@@ -178,7 +175,6 @@
                     </div>
 
                     <div class="space-y-4">
-                        <!-- Costo hora trabajo -->
                         <div>
                             <div class="flex justify-between items-center mb-1">
                                 <label for="input-costo-hora" class="text-xs font-bold text-slate-text dark:text-slate-300 flex items-center gap-1">
@@ -194,7 +190,6 @@
                             <p class="text-[11px] text-slate-muted dark:text-slate-400 mt-1">Valor atribuido a cada hora de trabajo de elaboración.</p>
                         </div>
 
-                        <!-- Multiplicador / Margen -->
                         <div>
                             <div class="flex justify-between items-center mb-1">
                                 <label for="slider-margen" class="text-xs font-bold text-slate-text dark:text-slate-300 flex items-center gap-1">
@@ -212,7 +207,6 @@
                             </div>
                         </div>
 
-                        <!-- Tiempo Ensamble General -->
                         <div>
                             <div class="flex justify-between items-center mb-1">
                                 <label for="input-tiempo-ensamble" class="text-xs font-bold text-slate-text dark:text-slate-300 flex items-center gap-1">
@@ -228,7 +222,6 @@
                             <p class="text-[11px] text-slate-muted dark:text-slate-400 mt-1">Tiempo de armado de estructura, envoltorio y moños.</p>
                         </div>
 
-                        <!-- Porcentaje de Merma / Desperdicio -->
                         <div>
                             <div class="flex justify-between items-center mb-1">
                                 <label for="input-porcentaje-merma" class="text-xs font-bold text-slate-text dark:text-slate-300 flex items-center gap-1">
@@ -252,7 +245,6 @@
                     </div>
                 </div>
 
-                <!-- QUICK TIP BOX -->
                 <div class="p-4 rounded-3xl bg-white dark:bg-slate-800/90 border border-rubielle-200 dark:border-slate-700 shadow-xs flex items-start space-x-3">
                     <div class="w-9 h-9 rounded-2xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <i class="fa-solid fa-lightbulb text-sm"></i>
@@ -267,7 +259,7 @@
 
             </aside>
 
-            <!-- RIGHT TAB CONTENT CONTAINER (8 cols on lg) -->
+            <!-- RIGHT TAB CONTENT CONTAINER -->
             <section class="lg:col-span-8">
 
                 <!-- MOBILE TABS SELECTOR -->
@@ -275,13 +267,12 @@
                     <button onclick="UI.setActiveTab('builder')" id="mob-tab-builder" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-rubielle-500 text-white shadow-xs">💐 Cotizador</button>
                     <button onclick="UI.setActiveTab('insumos')" id="mob-tab-insumos" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">📦 Empaque</button>
                     <button onclick="UI.setActiveTab('history')" id="mob-tab-history" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">📜 Historial</button>
-                    <button onclick="UI.setActiveTab('catalog')" id="mob-tab-catalog" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">🗃️️ Catálogo</button>
+                    <button onclick="UI.setActiveTab('catalog')" id="mob-tab-catalog" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">🗃 Catálogo</button>
                 </div>
 
                 <!-- TAB 1: ARMAR COMPOSICIÓN / COTIZADOR -->
                 <div id="tab-content-builder" class="tab-pane space-y-6">
                     
-                    <!-- ADD PIECE TO BOUQUET CARD -->
                     <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90">
                         <h3 class="font-serif font-bold text-lg text-rubielle-900 dark:text-rubielle-200 mb-1 flex items-center gap-2">
                             <i class="fa-solid fa-plus-circle text-rubielle-500 text-sm"></i>
@@ -289,11 +280,10 @@
                         </h3>
                         <p class="text-xs text-slate-muted dark:text-slate-400 mb-4">Filtra y selecciona flores, amigurumis o tejidos para agregarlos a la proforma activa.</p>
 
-                        <!-- Buscador dinámico de flores/piezas -->
                         <div class="mb-3">
                             <div class="relative">
                                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-muted dark:text-slate-400"></i>
-                                <input type="text" id="input-search-pieza" placeholder="Filtrar flor o pieza por nombre..."
+                                <input type="text" id="input-search-pieza" oninput="UI.populatePieceSelect(this.value)" placeholder="Filtrar flor o pieza por nombre..."
                                     class="w-full pl-8 pr-3 py-1.5 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none focus:border-rubielle-400">
                             </div>
                         </div>
@@ -302,7 +292,6 @@
                             <div class="sm:col-span-6">
                                 <label for="select-piezas" class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Pieza o Flor:</label>
                                 <select id="select-piezas" class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs font-semibold focus:outline-none focus:border-rubielle-400">
-                                    <!-- Dynamic Options -->
                                 </select>
                             </div>
                             <div class="sm:col-span-3">
@@ -318,7 +307,6 @@
                         </div>
                     </div>
 
-                    <!-- CART ITEMS BREAKDOWN TABLE -->
                     <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90">
                         <div class="flex items-center justify-between pb-3 mb-4 border-b border-rubielle-100 dark:border-slate-700">
                             <div>
@@ -330,28 +318,23 @@
                             </button>
                         </div>
 
-                        <!-- FLOWER PIECES LIST -->
                         <div class="mb-5">
                             <h4 class="text-xs font-bold uppercase tracking-wider text-rubielle-700 dark:text-rubielle-300 mb-2 flex items-center gap-1.5">
                                 <i class="fa-solid fa-spa text-rubielle-500"></i> Flores & Piezas Principales
                             </h4>
                             <div id="cart-flowers-list" class="space-y-2">
-                                <!-- Dynamic Injection -->
                             </div>
                         </div>
 
-                        <!-- PACKAGING INSUMOS LIST -->
                         <div>
                             <h4 class="text-xs font-bold uppercase tracking-wider text-rubielle-700 dark:text-rubielle-300 mb-2 flex items-center gap-1.5">
                                 <i class="fa-solid fa-box text-rubielle-500"></i> Insumos & Empaque
                             </h4>
                             <div id="cart-insumos-list" class="space-y-2">
-                                <!-- Dynamic Injection -->
                             </div>
                         </div>
                     </div>
 
-                    <!-- FINANCIAL METRICS SUMMARY CARDS -->
                     <div class="space-y-4">
                         <h3 class="font-serif font-bold text-lg text-rubielle-900 dark:text-rubielle-200 flex items-center gap-2">
                             <i class="fa-solid fa-calculator text-rubielle-500 text-sm"></i>
@@ -384,7 +367,6 @@
                             </div>
                         </div>
 
-                        <!-- HERO SUGGESTED PRICE BANNER -->
                         <div class="p-6 rounded-3xl bg-gradient-to-r from-rubielle-500 via-rubielle-600 to-rubielle-700 text-white shadow-soft-rose text-center relative overflow-hidden">
                             <div class="absolute right-2 top-2 opacity-10">
                                 <i class="fa-solid fa-gem text-8xl"></i>
@@ -395,7 +377,6 @@
                         </div>
                     </div>
 
-                    <!-- PROFORMA EXPORTER SECTION -->
                     <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90 space-y-4">
                         <div class="flex items-center justify-between">
                             <h3 class="font-serif font-bold text-base text-rubielle-900 dark:text-rubielle-200 flex items-center gap-2">
@@ -444,7 +425,7 @@
 
                 </div>
 
-                <!-- TAB 2: SELECCIÓN RÁPIDA DE INSUMOS Y EMPAQUE -->
+                <!-- TAB 2: INSUMOS Y EMPAQUE -->
                 <div id="tab-content-insumos" class="tab-pane hidden space-y-6">
                     <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-4 border-b border-rubielle-100 dark:border-slate-700">
@@ -461,14 +442,12 @@
                             </div>
                         </div>
 
-                        <!-- Insumos Grid Container -->
                         <div id="insumos-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                            <!-- Dynamic Injection -->
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB 3: HISTORIAL DE VENTAS Y MÉTRICAS -->
+                <!-- TAB 3: HISTORIAL DE VENTAS -->
                 <div id="tab-content-history" class="tab-pane hidden space-y-6">
                     
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -517,7 +496,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="history-table-body" class="divide-y divide-rubielle-100 dark:divide-slate-700 font-medium">
-                                    <!-- Dynamic Injection -->
                                 </tbody>
                             </table>
                         </div>
@@ -543,7 +521,6 @@
                             </div>
                         </div>
 
-                        <!-- Catalog Filter Controls -->
                         <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 mb-4">
                             <div class="sm:col-span-8">
                                 <input type="text" id="input-search-catalog" oninput="UI.renderCatalogTable()" placeholder="Buscar por código, nombre o receta..."
@@ -560,7 +537,6 @@
                             </div>
                         </div>
 
-                        <!-- Catalog Table -->
                         <div class="overflow-x-auto custom-scrollbar">
                             <table class="w-full text-left text-xs text-slate-text dark:text-slate-200">
                                 <thead class="bg-rubielle-50 dark:bg-slate-900 text-rubielle-900 dark:text-rubielle-200 font-bold uppercase text-[10px] tracking-wider">
@@ -575,7 +551,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="catalog-table-body" class="divide-y divide-rubielle-100 dark:divide-slate-700 font-medium">
-                                    <!-- Dynamic Injection -->
                                 </tbody>
                             </table>
                         </div>
@@ -590,7 +565,7 @@
     <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-    <!-- CREATE / EDIT MATERIAL MODAL -->
+    <!-- EDIT MATERIAL MODAL -->
     <div id="modal-item-editor" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
         <div class="glass-card bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-rubielle-200 dark:border-slate-700 space-y-4 animate-fade-in">
             <div class="flex items-center justify-between pb-2 border-b border-rubielle-100 dark:border-slate-700">
@@ -662,6 +637,6 @@
     </footer>
 
     <!-- Custom JS App Engine -->
-    <script src="js/app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
