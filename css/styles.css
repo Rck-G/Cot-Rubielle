@@ -1,0 +1,131 @@
+/* ==========================================
+   RUBIELLE PRO - SISTEMA DE COTIZACIÓN TALLER
+   HOJA DE ESTILOS ESTÁNDAR Y PERSONALIZADA
+   ========================================== */
+
+/* CONFIGURACIONES GENERALES Y FUENTES */
+body {
+    background-color: #FAF8F6;
+    color: #4A4652;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* COMPONENTES Y EFECTOS GLASSMORPHISM */
+.glass-header {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(253, 232, 237, 0.8);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(253, 232, 237, 0.75);
+}
+
+.rose-gradient-bg {
+    background: linear-gradient(135deg, #FFF5F7 0%, #FDE8ED 50%, #FAD0DC 100%);
+}
+
+.btn-primary-gradient {
+    background: linear-gradient(135deg, #E06C88 0%, #D85A7F 50%, #C94A6E 100%);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary-gradient:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(216, 90, 127, 0.35);
+}
+
+.btn-primary-gradient:active {
+    transform: translateY(0);
+}
+
+/* PERSONALIZACIÓN DE SCROLLBAR */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #FFF5F7;
+    border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #F4A7BD;
+    border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #E06C88;
+}
+
+/* ANIMACIONES */
+@keyframes fadeInDown {
+    from { 
+        opacity: 0; 
+        transform: translate3d(0, -15px, 0); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translate3d(0, 0, 0); 
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in {
+    animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ESTILOS PARA LA IMPRESIÓN DE PROFORMAS (PDF) */
+@media print {
+    header, 
+    aside, 
+    footer, 
+    section > div:first-child,
+    .md\:hidden,
+    button,
+    .btn-primary-gradient,
+    #toast-container {
+        display: none !important;
+    }
+
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    main {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .glass-card {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    #textarea-proforma {
+        border: 1px solid #ccc !important;
+        background: #fff !important;
+        font-size: 14px !important;
+        color: #000 !important;
+        height: auto !important;
+    }
+}

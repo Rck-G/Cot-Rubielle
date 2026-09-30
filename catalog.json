@@ -1,0 +1,306 @@
+[
+  {
+    "ID": "LP01",
+    "Nombre": "Tulipán 4 pétalos (Limpiapipas)",
+    "Categoría": "Limpiapipas",
+    "Costo Material (S/)": 0.40,
+    "Tiempo (min)": 15,
+    "Descripción": "Capullo 10m, hojas 3m, armado 2m"
+  },
+  {
+    "ID": "LP02",
+    "Nombre": "Tulipán 6 pétalos (Limpiapipas)",
+    "Categoría": "Limpiapipas",
+    "Costo Material (S/)": 0.50,
+    "Tiempo (min)": 20,
+    "Descripción": "Capullo 12m, hojas 5m, armado 3m"
+  },
+  {
+    "ID": "LP03",
+    "Nombre": "Girasol Pequeño (Limpiapipas)",
+    "Categoría": "Limpiapipas",
+    "Costo Material (S/)": 0.90,
+    "Tiempo (min)": 25,
+    "Descripción": "Centro café, pétalos amarillos"
+  },
+  {
+    "ID": "LP06",
+    "Nombre": "Snoopy (Limpiapipas)",
+    "Categoría": "Limpiapipas",
+    "Costo Material (S/)": 0.97,
+    "Tiempo (min)": 26,
+    "Descripción": "Mat: 18 limpiapipas (0.90), perla (0.07). Capullo 10m, armado 6m"
+  },
+  {
+    "ID": "LP08",
+    "Nombre": "Manzanilla / Margarita (Limpiapipas)",
+    "Categoría": "Limpiapipas",
+    "Costo Material (S/)": 0.30,
+    "Tiempo (min)": 5,
+    "Descripción": "Pétalos/centro 3m, armado 2m"
+  },
+  {
+    "ID": "LP07",
+    "Nombre": "Coneja (Limpiapipas)",
+    "Categoría": "Limpiapipas",
+    "Costo Material (S/)": 1.40,
+    "Tiempo (min)": 22,
+    "Descripción": "Detalles faciales y vestimenta base"
+  },
+  {
+    "ID": "LP09",
+    "Nombre": "Lirio (Limpiapipas)",
+    "Categoría": "Limpiapipas",
+    "Costo Material (S/)": 0.50,
+    "Tiempo (min)": 20,
+    "Descripción": "Armado de estambre y pétalos triples"
+  },
+  {
+    "ID": "CR01",
+    "Nombre": "Rosa Tejida (Crochet)",
+    "Categoría": "Crochet",
+    "Costo Material (S/)": 1.20,
+    "Tiempo (min)": 45,
+    "Descripción": "Hilo algodón, relleno, palito"
+  },
+  {
+    "ID": "CR02",
+    "Nombre": "Tulipán (Crochet)",
+    "Categoría": "Crochet",
+    "Costo Material (S/)": 0.80,
+    "Tiempo (min)": 30,
+    "Descripción": "Tejido estándar en hilo industrial"
+  },
+  {
+    "ID": "AM01",
+    "Nombre": "Abejita Amigurumi",
+    "Categoría": "Amigurumis",
+    "Costo Material (S/)": 2.10,
+    "Tiempo (min)": 60,
+    "Descripción": "Tejido completo, ojos de seguridad, bordado"
+  },
+  {
+    "ID": "AM02",
+    "Nombre": "Snoopy Amigurumi",
+    "Categoría": "Amigurumis",
+    "Costo Material (S/)": 2.25,
+    "Tiempo (min)": 60,
+    "Descripción": "Tejido completo, ojos de seguridad, bordado"
+  },
+  {
+    "ID": "AM03",
+    "Nombre": "Shrek Amigurumi",
+    "Categoría": "Amigurumis",
+    "Costo Material (S/)": 2.25,
+    "Tiempo (min)": 60,
+    "Descripción": "Tejido completo, detalles en fieltro/bordado"
+  },
+  {
+    "ID": "AM04",
+    "Nombre": "Pollito Amigurumi",
+    "Categoría": "Amigurumis",
+    "Costo Material (S/)": 2.25,
+    "Tiempo (min)": 60,
+    "Descripción": "Tejido completo, detalles en pico y patitas"
+  },
+  {
+    "ID": "AM05",
+    "Nombre": "Cristiano Amigurumi",
+    "Categoría": "Amigurumis",
+    "Costo Material (S/)": 2.25,
+    "Tiempo (min)": 60,
+    "Descripción": "Tejido personalizado con camiseta y detalles"
+  },
+  {
+    "ID": "INS01",
+    "Nombre": "Alambre",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.20,
+    "Tiempo (min)": 0,
+    "Descripción": "Soporte de tallo"
+  },
+  {
+    "ID": "INS02",
+    "Nombre": "Base",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.70,
+    "Tiempo (min)": 0,
+    "Descripción": "Estructura de ramo"
+  },
+  {
+    "ID": "INS03",
+    "Nombre": "Biruta",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 1.20,
+    "Tiempo (min)": 0,
+    "Descripción": "Relleno protector"
+  },
+  {
+    "ID": "INS04",
+    "Nombre": "Blonda",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.80,
+    "Tiempo (min)": 0,
+    "Descripción": "Decoración de encaje"
+  },
+  {
+    "ID": "INS05",
+    "Nombre": "Bolsa/Empaque",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 2.00,
+    "Tiempo (min)": 0,
+    "Descripción": "Presentación final"
+  },
+  {
+    "ID": "INS06",
+    "Nombre": "Brochetas",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.04,
+    "Tiempo (min)": 0,
+    "Descripción": "Palitos de fijación"
+  },
+  {
+    "ID": "INS07",
+    "Nombre": "Caja",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 5.00,
+    "Tiempo (min)": 0,
+    "Descripción": "Caja de regalo rígida"
+  },
+  {
+    "ID": "INS08",
+    "Nombre": "Cinta adhesiva",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.50,
+    "Tiempo (min)": 0,
+    "Descripción": "Consumible de pegado"
+  },
+  {
+    "ID": "INS09",
+    "Nombre": "Cinta gruesa/grande",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.50,
+    "Tiempo (min)": 0,
+    "Descripción": "Sujeción structural"
+  },
+  {
+    "ID": "INS10",
+    "Nombre": "Cinta organza",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.50,
+    "Tiempo (min)": 0,
+    "Descripción": "Cinta decorativa organza"
+  },
+  {
+    "ID": "INS11",
+    "Nombre": "Cinta satinada",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.50,
+    "Tiempo (min)": 0,
+    "Descripción": "Lazo exterior decorativo"
+  },
+  {
+    "ID": "INS12",
+    "Nombre": "Cinta de caja",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.75,
+    "Tiempo (min)": 0,
+    "Descripción": "Sellado de seguridad"
+  },
+  {
+    "ID": "INS13",
+    "Nombre": "Dulce",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 2.00,
+    "Tiempo (min)": 0,
+    "Descripción": "Complemento opcional"
+  },
+  {
+    "ID": "INS14",
+    "Nombre": "Floratei",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.20,
+    "Tiempo (min)": 0,
+    "Descripción": "Cinta floral verde"
+  },
+  {
+    "ID": "INS15",
+    "Nombre": "Ganchito",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.33,
+    "Tiempo (min)": 0,
+    "Descripción": "Sostén de tarjetas"
+  },
+  {
+    "ID": "INS16",
+    "Nombre": "Limpiapipas (Insumo)",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.05,
+    "Tiempo (min)": 0,
+    "Descripción": "Insumo extra por unidad"
+  },
+  {
+    "ID": "INS17",
+    "Nombre": "Perlitas",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.06,
+    "Tiempo (min)": 0,
+    "Descripción": "Acentuación visual"
+  },
+  {
+    "ID": "INS18",
+    "Nombre": "Papel Coreano",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.40,
+    "Tiempo (min)": 0,
+    "Descripción": "Pliego de envoltura impermeable"
+  },
+  {
+    "ID": "INS19",
+    "Nombre": "Papel Leche",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.92,
+    "Tiempo (min)": 0,
+    "Descripción": "Pliego de envoltura mate premium"
+  },
+  {
+    "ID": "INS20",
+    "Nombre": "Tarjeta dedicatoria",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.56,
+    "Tiempo (min)": 0,
+    "Descripción": "Impresión en couché"
+  },
+  {
+    "ID": "INS21",
+    "Nombre": "Tarjeta dulce",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.56,
+    "Tiempo (min)": 0,
+    "Descripción": "Etiqueta temática"
+  },
+  {
+    "ID": "INS22",
+    "Nombre": "Tarjeta hang tag",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.56,
+    "Tiempo (min)": 0,
+    "Descripción": "Etiqueta colgante de marca"
+  },
+  {
+    "ID": "INS23",
+    "Nombre": "Tarjeta mensaje",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.56,
+    "Tiempo (min)": 0,
+    "Descripción": "Tarjeta plegable mini"
+  },
+  {
+    "ID": "INS24",
+    "Nombre": "Uso",
+    "Categoría": "Empaque / Ensamble",
+    "Costo Material (S/)": 0.50,
+    "Tiempo (min)": 0,
+    "Descripción": "Desgaste de herramientas"
+  }
+]
