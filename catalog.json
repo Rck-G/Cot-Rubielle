@@ -17,11 +17,27 @@
   },
   {
     "ID": "LP03",
+    "Nombre": "Rosa Clásica (Limpiapipas)",
+    "Categoría": "Limpiapipas",
+    "Costo Material (S/)": 1.20,
+    "Tiempo (min)": 25,
+    "Descripción": "3 limpiapipas rojos, 1 verde, alambre fino"
+  },
+  {
+    "ID": "LP04",
     "Nombre": "Girasol Pequeño (Limpiapipas)",
     "Categoría": "Limpiapipas",
     "Costo Material (S/)": 0.90,
     "Tiempo (min)": 25,
     "Descripción": "Centro café, pétalos amarillos"
+  },
+    {
+    "ID": "LP05",
+    "Nombre": "Girasol Grande (Limpiapipas)",
+    "Categoría": "Limpiapipas",
+    "Costo Material (S/)": 1.80,
+    "Tiempo (min)": 35,
+    "Descripción": "5 limpiapipas amarillos, centro marrón"
   },
   {
     "ID": "LP06",
@@ -32,7 +48,7 @@
     "Descripción": "Mat: 18 limpiapipas (0.90), perla (0.07). Capullo 10m, armado 6m"
   },
   {
-    "ID": "LP08",
+    "ID": "LP07",
     "Nombre": "Manzanilla / Margarita (Limpiapipas)",
     "Categoría": "Limpiapipas",
     "Costo Material (S/)": 0.30,
@@ -40,7 +56,7 @@
     "Descripción": "Pétalos/centro 3m, armado 2m"
   },
   {
-    "ID": "LP07",
+    "ID": "LP08",
     "Nombre": "Coneja (Limpiapipas)",
     "Categoría": "Limpiapipas",
     "Costo Material (S/)": 1.40,
@@ -71,6 +87,7 @@
     "Tiempo (min)": 30,
     "Descripción": "Tejido estándar en hilo industrial"
   },
+  
   {
     "ID": "AM01",
     "Nombre": "Abejita Amigurumi",

@@ -1,7 +1,9 @@
 /* ==========================================
    RUBIELLE PRO - SISTEMA DE COTIZACIÓN TALLER
+   HOJA DE ESTILOS ESTÁNDAR Y PERSONALIZADA
    ========================================== */
 
+/* CONFIGURACIONES GENERALES Y FUENTES */
 body {
     background-color: #FAF8F6;
     color: #4A4652;
@@ -9,6 +11,7 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* COMPONENTES Y EFECTOS GLASSMORPHISM */
 .glass-header {
     background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(12px);
@@ -85,8 +88,23 @@ body {
     }
 }
 
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
 .animate-fade-in {
     animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in {
+    animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* ESTILOS PARA LA IMPRESIÓN DE PROFORMAS (PDF) */
