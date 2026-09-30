@@ -610,9 +610,30 @@ const Handlers = {
     loadDefaultPack() {
         const totalFlowers = Object.values(State.data.cartFlowers).reduce((a, b) => a + b, 0) || 1;
         State.data.cartInsumos = {
+            "Alambre": 1,
+            "Base": 1,
+            "Biruta": 1,
+            "Blonda": 1,
+            "Bolsa/Empaque": 1,
+            "Brochetas": total_flores,
+            "Floratei": total_flores,
+            "Caja": 1,
+            "Cinta adhesiva": 1,
+            "Cinta gruesa/grande": 1,
+            "Cinta satinada": 1,
+            "Cinta organza": 1,
+            "Cinta de caja": 1,
+            "Dulce": 1,
+            "Ganchito": 1,
+            "Limpiapipas (Insumo)": 1,
+            "Perlitas": 1,
             "Papel Coreano": 3,
-            "Cinta Satinada": 1,
-            "Tarjeta dedicatoria": 1
+            "Papel Leche": 1,
+            "Tarjeta dedicatoria": 1,
+            "Tarjeta dulce": 1,
+            "Tarjeta hang tag": 1,
+            "Tarjeta mensaje": 1,
+            "Uso": 1
         };
         State.save();
         UI.renderCartItems();
