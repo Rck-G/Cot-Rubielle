@@ -61,7 +61,7 @@
     </script>
 
     <!-- Custom CSS File -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-rubielle-200 selection:text-rubielle-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
 
@@ -157,8 +157,16 @@
             </div>
         </section>
 
+                        <!-- MOBILE TABS SELECTOR -->
+        <div class="md:hidden mb-4 flex space-x-2 overflow-x-auto pb-2 custom-scrollbar">
+            <button onclick="UI.setActiveTab('builder')" id="mob-tab-builder" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-rubielle-500 text-white shadow-xs">💐 Cotizador</button>
+            <button onclick="UI.setActiveTab('insumos')" id="mob-tab-insumos" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">📦 Empaque</button>
+            <button onclick="UI.setActiveTab('history')" id="mob-tab-history" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">📜 Historial</button>
+            <button onclick="UI.setActiveTab('catalog')" id="mob-tab-catalog" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">🗃 Catálogo</button>
+        </div>
+
         <!-- DASHBOARD CONTENT LAYOUT -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="flex flex-col lg:grid lg:grid-cols-12 gap-6">
             
             <!-- LEFT CONFIGURATION SIDEBAR -->
             <aside class="lg:col-span-4 space-y-6">
@@ -261,14 +269,6 @@
 
             <!-- RIGHT TAB CONTENT CONTAINER -->
             <section class="lg:col-span-8">
-
-                <!-- MOBILE TABS SELECTOR -->
-                <div class="md:hidden mb-4 flex space-x-2 overflow-x-auto pb-2 custom-scrollbar">
-                    <button onclick="UI.setActiveTab('builder')" id="mob-tab-builder" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-rubielle-500 text-white shadow-xs">💐 Cotizador</button>
-                    <button onclick="UI.setActiveTab('insumos')" id="mob-tab-insumos" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">📦 Empaque</button>
-                    <button onclick="UI.setActiveTab('history')" id="mob-tab-history" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">📜 Historial</button>
-                    <button onclick="UI.setActiveTab('catalog')" id="mob-tab-catalog" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">🗃 Catálogo</button>
-                </div>
 
                 <!-- TAB 1: ARMAR COMPOSICIÓN / COTIZADOR -->
                 <div id="tab-content-builder" class="tab-pane space-y-6">
@@ -637,6 +637,6 @@
     </footer>
 
     <!-- Custom JS App Engine -->
-    <script src="js/app.js"></script>
+    <script src="./js/app.js"></script>
 </body>
 </html>
