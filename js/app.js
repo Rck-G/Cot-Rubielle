@@ -127,11 +127,40 @@ const UI = {
                     if (mobBtn) mobBtn.className = "px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-rubielle-500 text-white shadow-xs";
                 } else {
                     content.classList.add('hidden');
-                    if (navBtn) navBtn.className = "nav-btn px-4 py-1.5 rounded-full text-xs font-bold text-slate-text hover:text-rubielle-600 transition-all duration-200 hover:bg-rubielle-50";
-                    if (mobBtn) mobBtn.className = "px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white text-slate-text border border-rubielle-200";
+                    if (navBtn) navBtn.className = "nav-btn px-4 py-1.5 rounded-full text-xs font-bold text-slate-text dark:text-slate-300 hover:text-rubielle-600 transition-all duration-200 hover:bg-rubielle-50 dark:hover:bg-slate-700/50";
+                    if (mobBtn) mobBtn.className = "px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700";
                 }
             }
         });
+    },
+
+    toggleTheme() {
+        const html = document.documentElement;
+        const themeIcon = document.getElementById('theme-toggle-icon');
+        
+        if (html.classList.contains('dark')) {
+            html.classList.remove('dark');
+            localStorage.setItem('rubielle_theme', 'light');
+            if (themeIcon) themeIcon.className = 'fa-solid fa-moon text-sm';
+        } else {
+            html.classList.add('dark');
+            localStorage.setItem('rubielle_theme', 'dark');
+            if (themeIcon) themeIcon.className = 'fa-solid fa-sun text-sm';
+        }
+    },
+
+    initTheme() {
+        const savedTheme = localStorage.getItem('rubielle_theme');
+        const themeIcon = document.getElementById('theme-toggle-icon');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.classList.add('dark');
+            if (themeIcon) themeIcon.className = 'fa-solid fa-sun text-sm';
+        } else {
+            document.documentElement.classList.remove('dark');
+            if (themeIcon) themeIcon.className = 'fa-solid fa-moon text-sm';
+        }
     },
 
     populatePieceSelect(filterText = '') {
@@ -177,7 +206,7 @@ const UI = {
         // Render Flores
         const flowerEntries = Object.entries(State.data.cartFlowers).filter(([_, qty]) => qty > 0);
         if (flowerEntries.length === 0) {
-            flowersContainer.innerHTML = `<p class="text-xs text-slate-muted italic py-2">No hay flores o piezas agregadas.</p>`;
+            flowersContainer.innerHTML = `<p class="text-xs text-slate-muted dark:text-slate-400 italic py-2">No hay flores o piezas agregadas.</p>`;
         } else {
             flowerEntries.forEach(([name, qty]) => {
                 totalCount += qty;
@@ -186,14 +215,14 @@ const UI = {
                 const subtotal = costUnit * qty;
 
                 const row = document.createElement('div');
-                row.className = "flex items-center justify-between p-2.5 rounded-2xl bg-white border border-rubielle-100 shadow-xs";
+                row.className = "flex items-center justify-between p-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-rubielle-100 dark:border-slate-700 shadow-xs";
                 row.innerHTML = `
                     <div class="flex-grow pr-2">
-                        <p class="text-xs font-bold text-slate-dark">${name}</p>
-                        <p class="text-[10px] text-slate-muted">S/ ${costUnit.toFixed(2)} c/u | Subtotal: <span class="font-bold text-rubielle-700">S/ ${subtotal.toFixed(2)}</span></p>
+                        <p class="text-xs font-bold text-slate-dark dark:text-slate-100">${name}</p>
+                        <p class="text-[10px] text-slate-muted dark:text-slate-400">S/ ${costUnit.toFixed(2)} c/u | Subtotal: <span class="font-bold text-rubielle-700 dark:text-rubielle-300">S/ ${subtotal.toFixed(2)}</span></p>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <input type="number" min="1" value="${qty}" class="cart-flower-qty w-14 px-2 py-1 bg-rubielle-50 rounded-lg border border-rubielle-200 text-xs font-bold text-center">
+                        <input type="number" min="1" value="${qty}" class="cart-flower-qty w-14 px-2 py-1 bg-rubielle-50 dark:bg-slate-800 rounded-lg border border-rubielle-200 dark:border-slate-700 text-xs font-bold text-center dark:text-slate-100">
                         <button class="cart-flower-remove text-slate-400 hover:text-rose-500 p-1">
                             <i class="fa-solid fa-xmark text-sm"></i>
                         </button>
@@ -213,7 +242,7 @@ const UI = {
         // Render Insumos
         const insumosEntries = Object.entries(State.data.cartInsumos).filter(([_, qty]) => qty > 0);
         if (insumosEntries.length === 0) {
-            insumosContainer.innerHTML = `<p class="text-xs text-slate-muted italic py-2">No hay insumos de empaque cargados.</p>`;
+            insumosContainer.innerHTML = `<p class="text-xs text-slate-muted dark:text-slate-400 italic py-2">No hay insumos de empaque cargados.</p>`;
         } else {
             insumosEntries.forEach(([name, qty]) => {
                 totalCount += qty;
@@ -222,14 +251,14 @@ const UI = {
                 const subtotal = costUnit * qty;
 
                 const row = document.createElement('div');
-                row.className = "flex items-center justify-between p-2.5 rounded-2xl bg-cream-50 border border-rubielle-100 shadow-xs";
+                row.className = "flex items-center justify-between p-2.5 rounded-2xl bg-cream-50 dark:bg-slate-900 border border-rubielle-100 dark:border-slate-700 shadow-xs";
                 row.innerHTML = `
                     <div class="flex-grow pr-2">
-                        <p class="text-xs font-bold text-slate-dark">${name}</p>
-                        <p class="text-[10px] text-slate-muted">S/ ${costUnit.toFixed(2)} c/u | Subtotal: <span class="font-bold text-slate-dark">S/ ${subtotal.toFixed(2)}</span></p>
+                        <p class="text-xs font-bold text-slate-dark dark:text-slate-100">${name}</p>
+                        <p class="text-[10px] text-slate-muted dark:text-slate-400">S/ ${costUnit.toFixed(2)} c/u | Subtotal: <span class="font-bold text-slate-dark dark:text-slate-200">S/ ${subtotal.toFixed(2)}</span></p>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <input type="number" min="0" value="${qty}" class="cart-insumo-qty w-14 px-2 py-1 bg-white rounded-lg border border-rubielle-200 text-xs font-bold text-center">
+                        <input type="number" min="0" value="${qty}" class="cart-insumo-qty w-14 px-2 py-1 bg-white dark:bg-slate-800 rounded-lg border border-rubielle-200 dark:border-slate-700 text-xs font-bold text-center dark:text-slate-100">
                         <button class="cart-insumo-remove text-slate-400 hover:text-rose-500 p-1">
                             <i class="fa-solid fa-xmark text-sm"></i>
                         </button>
@@ -318,21 +347,21 @@ const UI = {
             const subtotal = qty * item["Costo Material (S/)"];
 
             const card = document.createElement('div');
-            card.className = "p-3.5 rounded-2xl bg-white border border-rubielle-100 shadow-xs space-y-2";
+            card.className = "p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-rubielle-100 dark:border-slate-700 shadow-xs space-y-2";
             card.innerHTML = `
                 <div class="flex justify-between items-start">
                     <div>
-                        <h4 class="text-xs font-bold text-slate-dark"></h4>
-                        <p class="text-[10px] text-slate-muted">Costo: S/ ${item["Costo Material (S/)"].toFixed(2)}</p>
+                        <h4 class="text-xs font-bold text-slate-dark dark:text-slate-100"></h4>
+                        <p class="text-[10px] text-slate-muted dark:text-slate-400">Costo: S/ ${item["Costo Material (S/)"].toFixed(2)}</p>
                     </div>
-                    <span class="text-[10px] bg-rubielle-50 text-rubielle-700 font-bold px-2 py-0.5 rounded-md">
+                    <span class="text-[10px] bg-rubielle-50 dark:bg-rubielle-900/50 text-rubielle-700 dark:text-rubielle-300 font-bold px-2 py-0.5 rounded-md">
                         Sub: S/ ${subtotal.toFixed(2)}
                     </span>
                 </div>
                 <div class="flex items-center space-x-2 pt-1">
-                    <button class="btn-dec w-7 h-7 rounded-lg bg-rubielle-50 hover:bg-rubielle-100 text-rubielle-700 font-bold text-xs">-</button>
-                    <input type="number" min="0" value="${qty}" class="input-qty w-full py-1 bg-cream-50 rounded-lg border border-rubielle-200 text-xs font-bold text-center">
-                    <button class="btn-inc w-7 h-7 rounded-lg bg-rubielle-50 hover:bg-rubielle-100 text-rubielle-700 font-bold text-xs">+</button>
+                    <button class="btn-dec w-7 h-7 rounded-lg bg-rubielle-50 dark:bg-slate-800 hover:bg-rubielle-100 dark:hover:bg-slate-700 text-rubielle-700 dark:text-rubielle-300 font-bold text-xs">-</button>
+                    <input type="number" min="0" value="${qty}" class="input-qty w-full py-1 bg-cream-50 dark:bg-slate-800 dark:text-slate-100 rounded-lg border border-rubielle-200 dark:border-slate-700 text-xs font-bold text-center">
+                    <button class="btn-inc w-7 h-7 rounded-lg bg-rubielle-50 dark:bg-slate-800 hover:bg-rubielle-100 dark:hover:bg-slate-700 text-rubielle-700 dark:text-rubielle-300 font-bold text-xs">+</button>
                 </div>
             `;
 
@@ -369,16 +398,16 @@ const UI = {
 
         filtered.forEach(item => {
             const row = document.createElement('tr');
-            row.className = "hover:bg-rubielle-50/50 transition-colors";
+            row.className = "hover:bg-rubielle-50/50 dark:hover:bg-slate-800/50 transition-colors";
             row.innerHTML = `
-                <td class="p-3 font-mono font-bold text-rubielle-700"></td>
-                <td class="p-3 font-bold text-slate-dark"></td>
-                <td class="p-3"><span class="px-2 py-0.5 rounded-full bg-rubielle-100 text-rubielle-700 text-[10px] font-bold"></span></td>
+                <td class="p-3 font-mono font-bold text-rubielle-700 dark:text-rubielle-300"></td>
+                <td class="p-3 font-bold text-slate-dark dark:text-slate-100"></td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded-full bg-rubielle-100 dark:bg-rubielle-900/60 text-rubielle-700 dark:text-rubielle-300 text-[10px] font-bold"></span></td>
                 <td class="p-3 font-bold">S/ ${item["Costo Material (S/)"].toFixed(2)}</td>
                 <td class="p-3 font-bold">${item["Tiempo (min)"]} min</td>
-                <td class="p-3 text-[11px] text-slate-muted"></td>
+                <td class="p-3 text-[11px] text-slate-muted dark:text-slate-400"></td>
                 <td class="p-3 text-right space-x-1">
-                    <button class="btn-edit p-1.5 text-slate-400 hover:text-rubielle-600 transition-colors" title="Editar Elemento">
+                    <button class="btn-edit p-1.5 text-slate-400 hover:text-rubielle-600 dark:hover:text-rubielle-400 transition-colors" title="Editar Elemento">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button class="btn-delete p-1.5 text-slate-400 hover:text-rose-500 transition-colors" title="Eliminar Elemento">
@@ -408,22 +437,22 @@ const UI = {
         let totalGanancia = 0;
 
         if (State.data.history.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-muted italic">Aún no se han registrado ventas en el historial.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-muted dark:text-slate-400 italic">Aún no se han registrado ventas en el historial.</td></tr>`;
         } else {
             State.data.history.forEach((item) => {
                 totalVentas += item.precioVenta;
                 totalGanancia += item.ganancia;
 
                 const row = document.createElement('tr');
-                row.className = "hover:bg-rubielle-50/50 transition-colors";
+                row.className = "hover:bg-rubielle-50/50 dark:hover:bg-slate-800/50 transition-colors";
                 row.innerHTML = `
-                    <td class="p-3 text-slate-muted"></td>
-                    <td class="p-3 font-bold text-slate-dark"></td>
+                    <td class="p-3 text-slate-muted dark:text-slate-400"></td>
+                    <td class="p-3 font-bold text-slate-dark dark:text-slate-100"></td>
                     <td class="p-3 font-medium"></td>
                     <td class="p-3">S/ ${item.costoBase.toFixed(2)}</td>
-                    <td class="p-3 font-bold text-rubielle-700">S/ ${item.precioVenta.toFixed(2)}</td>
-                    <td class="p-3 font-bold text-emerald-600">S/ ${item.ganancia.toFixed(2)}</td>
-                    <td class="p-3 text-[11px] text-slate-muted"></td>
+                    <td class="p-3 font-bold text-rubielle-700 dark:text-rubielle-300">S/ ${item.precioVenta.toFixed(2)}</td>
+                    <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400">S/ ${item.ganancia.toFixed(2)}</td>
+                    <td class="p-3 text-[11px] text-slate-muted dark:text-slate-400"></td>
                     <td class="p-3 text-right">
                         <button class="btn-delete-rec p-1.5 text-slate-400 hover:text-rose-500 transition-colors" title="Eliminar Registro">
                             <i class="fa-solid fa-trash-can"></i>
@@ -825,7 +854,7 @@ const Toast = {
         if (type === 'success') icon = 'fa-circle-check text-emerald-500';
         if (type === 'error') icon = 'fa-triangle-exclamation text-rose-500';
 
-        toast.className = `pointer-events-auto flex items-center space-x-2.5 px-4 py-3 rounded-2xl bg-white border border-rubielle-200 shadow-xl text-xs font-bold text-slate-dark animate-fade-in`;
+        toast.className = `pointer-events-auto flex items-center space-x-2.5 px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-rubielle-200 dark:border-slate-700 shadow-xl text-xs font-bold text-slate-dark dark:text-slate-100 animate-fade-in`;
         
         const iconElem = document.createElement('i');
         iconElem.className = `fa-solid ${icon} text-sm`;
@@ -848,6 +877,7 @@ const Toast = {
 
 // INICIALIZACIÓN ASÍNCRONA Y EVENT LISTENERS
 window.addEventListener('DOMContentLoaded', async () => {
+    UI.initTheme();
     await State.init();
     UI.populatePieceSelect();
     UI.renderCartItems();

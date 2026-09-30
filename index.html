@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-cream-50">
+<html lang="es" class="h-full bg-cream-50 dark:bg-slate-900 transition-colors duration-300">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +13,11 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS CDN con configuración DarkMode por clase -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -41,6 +42,8 @@
                             text: '#4A4652',
                             muted: '#7A7585',
                             dark: '#2A2633',
+                            darkcard: '#1E1B26',
+                            darkborder: '#2D2838'
                         }
                     },
                     fontFamily: {
@@ -60,52 +63,58 @@
     <!-- Custom CSS File -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-rubielle-200 selection:text-rubielle-900">
+<body class="min-h-screen flex flex-col justify-between selection:bg-rubielle-200 selection:text-rubielle-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
 
     <!-- TOP NAVIGATION BAR -->
-    <header class="sticky top-0 z-40 glass-header px-4 lg:px-8 py-3 transition-all duration-200">
+    <header class="sticky top-0 z-40 glass-header px-4 lg:px-8 py-3 transition-all duration-200 border-b dark:border-slate-800">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             
             <!-- Brand Logo -->
             <div class="flex items-center space-x-3 cursor-pointer" onclick="UI.setActiveTab('builder')">
-                <div class="w-10 h-10 rounded-2xl bg-rubielle-100 border border-rubielle-200 flex items-center justify-center text-rubielle-500 shadow-sm">
+                <div class="w-10 h-10 rounded-2xl bg-rubielle-100 dark:bg-rubielle-900/50 border border-rubielle-200 dark:border-rubielle-800 flex items-center justify-center text-rubielle-500 shadow-sm">
                     <i class="fa-solid fa-seedling text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-serif text-2xl font-bold tracking-wide text-rubielle-900 flex items-center gap-1">
-                        Rubielle <span class="text-[10px] font-sans font-bold px-2 py-0.5 rounded-full bg-rubielle-100 text-rubielle-700 border border-rubielle-200 ml-1">PRO</span>
+                    <h1 class="font-serif text-2xl font-bold tracking-wide text-rubielle-900 dark:text-rubielle-200 flex items-center gap-1">
+                        Rubielle <span class="text-[10px] font-sans font-bold px-2 py-0.5 rounded-full bg-rubielle-100 dark:bg-rubielle-900 dark:text-rubielle-300 text-rubielle-700 border border-rubielle-200 dark:border-rubielle-700 ml-1">PRO</span>
                     </h1>
-                    <p class="text-[10px] text-slate-muted uppercase tracking-widest font-semibold">Arte Floral & Artesanal</p>
+                    <p class="text-[10px] text-slate-muted dark:text-slate-400 uppercase tracking-widest font-semibold">Arte Floral & Artesanal</p>
                 </div>
             </div>
 
             <!-- Central Nav Links (Desktop) -->
-            <nav class="hidden md:flex items-center space-x-1 bg-white/80 p-1.5 rounded-full border border-rubielle-100 shadow-xs">
+            <nav class="hidden md:flex items-center space-x-1 bg-white/80 dark:bg-slate-800/80 p-1.5 rounded-full border border-rubielle-100 dark:border-slate-700 shadow-xs">
                 <button onclick="UI.setActiveTab('builder')" id="nav-tab-builder" class="nav-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 bg-rubielle-500 text-white shadow-xs">
                     <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>Cotizador
                 </button>
-                <button onclick="UI.setActiveTab('insumos')" id="nav-tab-insumos" class="nav-btn px-4 py-1.5 rounded-full text-xs font-bold text-slate-text hover:text-rubielle-600 transition-all duration-200 hover:bg-rubielle-50">
+                <button onclick="UI.setActiveTab('insumos')" id="nav-tab-insumos" class="nav-btn px-4 py-1.5 rounded-full text-xs font-bold text-slate-text dark:text-slate-300 hover:text-rubielle-600 transition-all duration-200 hover:bg-rubielle-50 dark:hover:bg-slate-700/50">
                     <i class="fa-solid fa-box-open mr-1.5"></i>Insumos & Empaque
                 </button>
-                <button onclick="UI.setActiveTab('history')" id="nav-tab-history" class="nav-btn px-4 py-1.5 rounded-full text-xs font-bold text-slate-text hover:text-rubielle-600 transition-all duration-200 hover:bg-rubielle-50">
+                <button onclick="UI.setActiveTab('history')" id="nav-tab-history" class="nav-btn px-4 py-1.5 rounded-full text-xs font-bold text-slate-text dark:text-slate-300 hover:text-rubielle-600 transition-all duration-200 hover:bg-rubielle-50 dark:hover:bg-slate-700/50">
                     <i class="fa-solid fa-clock-rotate-left mr-1.5"></i>Historial
                 </button>
-                <button onclick="UI.setActiveTab('catalog')" id="nav-tab-catalog" class="nav-btn px-4 py-1.5 rounded-full text-xs font-bold text-slate-text hover:text-rubielle-600 transition-all duration-200 hover:bg-rubielle-50">
+                <button onclick="UI.setActiveTab('catalog')" id="nav-tab-catalog" class="nav-btn px-4 py-1.5 rounded-full text-xs font-bold text-slate-text dark:text-slate-300 hover:text-rubielle-600 transition-all duration-200 hover:bg-rubielle-50 dark:hover:bg-slate-700/50">
                     <i class="fa-solid fa-book-bookmark mr-1.5"></i>Catálogo Materiales
                 </button>
             </nav>
 
-            <!-- Quick Info Badge & Cart Item Count -->
+            <!-- Quick Info Badge, Dark Mode Toggle & Cart Item Count -->
             <div class="flex items-center space-x-3">
-                <div class="hidden sm:flex items-center space-x-2 bg-rubielle-50 px-3 py-1.5 rounded-full border border-rubielle-200 text-xs text-rubielle-700 font-bold">
+                <div class="hidden sm:flex items-center space-x-2 bg-rubielle-50 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-rubielle-200 dark:border-slate-700 text-xs text-rubielle-700 dark:text-rubielle-300 font-bold">
                     <i class="fa-solid fa-coins text-rubielle-500"></i>
                     <span>Soles (S/)</span>
                 </div>
+
+                <!-- DARK MODE TOGGLE BUTTON -->
+                <button id="theme-toggle-btn" onclick="UI.toggleTheme()" class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-800 border border-rubielle-200 dark:border-slate-700 flex items-center justify-center text-rubielle-600 dark:text-amber-400 shadow-xs hover:border-rubielle-400 transition-all">
+                    <i id="theme-toggle-icon" class="fa-solid fa-moon text-sm"></i>
+                </button>
+
                 <div id="cart-counter-badge" class="relative cursor-pointer" onclick="UI.setActiveTab('builder')">
-                    <div class="w-10 h-10 rounded-2xl bg-white border border-rubielle-200 flex items-center justify-center text-rubielle-600 shadow-xs hover:border-rubielle-400 transition-colors">
+                    <div class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-800 border border-rubielle-200 dark:border-slate-700 flex items-center justify-center text-rubielle-600 dark:text-rubielle-300 shadow-xs hover:border-rubielle-400 transition-colors">
                         <i class="fa-solid fa-basket-shopping text-sm"></i>
                     </div>
-                    <span id="cart-item-count" class="absolute -top-1 -right-1 bg-rubielle-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-xs">0</span>
+                    <span id="cart-item-count" class="absolute -top-1 -right-1 bg-rubielle-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-800 shadow-xs">0</span>
                 </div>
             </div>
 
@@ -116,31 +125,31 @@
     <main class="max-w-7xl mx-auto px-4 lg:px-8 py-6 flex-grow w-full">
 
         <!-- HERO / TOP ANNOUNCEMENT BANNER -->
-        <section class="mb-6 rounded-3xl rose-gradient-bg p-6 lg:p-8 border border-rubielle-200/80 shadow-soft-rose relative overflow-hidden">
+        <section class="mb-6 rounded-3xl rose-gradient-bg dark:bg-gradient-to-r dark:from-slate-800 dark:via-rubielle-900/40 dark:to-slate-800 p-6 lg:p-8 border border-rubielle-200/80 dark:border-slate-700 shadow-soft-rose relative overflow-hidden">
             <div class="absolute -right-10 -bottom-10 opacity-15 text-rubielle-400 pointer-events-none">
                 <i class="fa-solid fa-spa text-[220px]"></i>
             </div>
 
             <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 text-rubielle-700 text-xs font-bold tracking-wide border border-rubielle-200 mb-3 shadow-xs">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 dark:bg-slate-800/90 text-rubielle-700 dark:text-rubielle-300 text-xs font-bold tracking-wide border border-rubielle-200 dark:border-slate-700 mb-3 shadow-xs">
                         <i class="fa-solid fa-heart text-rubielle-500 text-[10px]"></i>
                         Confección 100% Artesanal a Pedido
                     </span>
-                    <h2 class="font-serif text-2xl lg:text-3xl font-bold text-rubielle-900 leading-tight">
+                    <h2 class="font-serif text-2xl lg:text-3xl font-bold text-rubielle-900 dark:text-rubielle-100 leading-tight">
                         Sistema Inteligente de Cotización Taller
                     </h2>
-                    <p class="text-slate-text/80 text-xs lg:text-sm mt-1 max-w-xl leading-relaxed">
+                    <p class="text-slate-text/80 dark:text-slate-300 text-xs lg:text-sm mt-1 max-w-xl leading-relaxed">
                         Gestiona materiales, tiempos de confección, costos de mano de obra y genera proformas listas para WhatsApp o Impresión.
                     </p>
                 </div>
 
                 <!-- Hero Action Quick Shortcuts -->
                 <div class="flex flex-wrap items-center gap-2">
-                    <button onclick="Handlers.clearAllOrder()" class="px-3.5 py-2 rounded-xl bg-white/90 hover:bg-white text-slate-text text-xs font-bold transition-all border border-rubielle-200 shadow-xs flex items-center gap-1.5">
+                    <button onclick="Handlers.clearAllOrder()" class="px-3.5 py-2 rounded-xl bg-white/90 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 text-slate-text dark:text-slate-200 text-xs font-bold transition-all border border-rubielle-200 dark:border-slate-700 shadow-xs flex items-center gap-1.5">
                         <i class="fa-solid fa-rotate text-rubielle-500"></i> Vaciar Cotización
                     </button>
-                    <button onclick="Handlers.loadDefaultPack()" class="px-4 py-2 rounded-xl bg-white hover:bg-rubielle-50 text-rubielle-700 text-xs font-bold transition-all border border-rubielle-300 shadow-xs flex items-center gap-1.5">
+                    <button onclick="Handlers.loadDefaultPack()" class="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-rubielle-50 dark:hover:bg-slate-700 text-rubielle-700 dark:text-rubielle-300 text-xs font-bold transition-all border border-rubielle-300 dark:border-slate-700 shadow-xs flex items-center gap-1.5">
                         <i class="fa-solid fa-wand-magic-sparkles text-rubielle-500"></i> Empaque Estándar
                     </button>
                     <button onclick="UI.openItemModal()" class="px-4 py-2 rounded-xl btn-primary-gradient text-white text-xs font-bold shadow-xs flex items-center gap-1.5">
@@ -157,13 +166,13 @@
             <aside class="lg:col-span-4 space-y-6">
                 
                 <!-- TALLER CONFIG CARD -->
-                <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100">
-                    <div class="flex items-center justify-between pb-3 mb-4 border-b border-rubielle-100">
-                        <h3 class="font-serif font-bold text-base text-rubielle-900 flex items-center gap-2">
+                <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90">
+                    <div class="flex items-center justify-between pb-3 mb-4 border-b border-rubielle-100 dark:border-slate-700">
+                        <h3 class="font-serif font-bold text-base text-rubielle-900 dark:text-rubielle-200 flex items-center gap-2">
                             <i class="fa-solid fa-sliders text-rubielle-500"></i>
                             Parámetros del Taller
                         </h3>
-                        <span class="text-[10px] font-extrabold uppercase bg-rubielle-100 text-rubielle-700 px-2.5 py-0.5 rounded-full">
+                        <span class="text-[10px] font-extrabold uppercase bg-rubielle-100 dark:bg-rubielle-900/60 dark:text-rubielle-300 text-rubielle-700 px-2.5 py-0.5 rounded-full">
                             Auto-Guardado
                         </span>
                     </div>
@@ -172,33 +181,33 @@
                         <!-- Costo hora trabajo -->
                         <div>
                             <div class="flex justify-between items-center mb-1">
-                                <label for="input-costo-hora" class="text-xs font-bold text-slate-text flex items-center gap-1">
+                                <label for="input-costo-hora" class="text-xs font-bold text-slate-text dark:text-slate-300 flex items-center gap-1">
                                     <i class="fa-regular fa-clock text-rubielle-400"></i> Costo Hora Artesana
                                 </label>
-                                <span class="text-xs font-extrabold text-rubielle-700" id="display-costo-hora">S/ 5.00 / h</span>
+                                <span class="text-xs font-extrabold text-rubielle-700 dark:text-rubielle-300" id="display-costo-hora">S/ 5.00 / h</span>
                             </div>
                             <div class="relative flex items-center">
                                 <span class="absolute left-3 text-xs text-slate-muted font-bold">S/</span>
                                 <input type="number" id="input-costo-hora" value="5.00" step="0.5" min="0" oninput="Handlers.handleWorkshopConfigChange()" 
-                                    class="w-full pl-8 pr-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs font-bold text-slate-dark focus:outline-none focus:border-rubielle-400 focus:ring-2 focus:ring-rubielle-100 transition-all">
+                                    class="w-full pl-8 pr-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs font-bold focus:outline-none focus:border-rubielle-400 transition-all">
                             </div>
-                            <p class="text-[11px] text-slate-muted mt-1">Valor atribuido a cada hora de trabajo de elaboración.</p>
+                            <p class="text-[11px] text-slate-muted dark:text-slate-400 mt-1">Valor atribuido a cada hora de trabajo de elaboración.</p>
                         </div>
 
                         <!-- Multiplicador / Margen -->
                         <div>
                             <div class="flex justify-between items-center mb-1">
-                                <label for="slider-margen" class="text-xs font-bold text-slate-text flex items-center gap-1">
+                                <label for="slider-margen" class="text-xs font-bold text-slate-text dark:text-slate-300 flex items-center gap-1">
                                     <i class="fa-solid fa-chart-line text-rubielle-400"></i> Multiplicador Comercial
                                 </label>
-                                <span class="text-xs font-extrabold text-rubielle-700 bg-rubielle-100 px-2.5 py-0.5 rounded-full" id="display-margen-factor">1.20x</span>
+                                <span class="text-xs font-extrabold text-rubielle-700 dark:text-rubielle-300 bg-rubielle-100 dark:bg-rubielle-900/60 px-2.5 py-0.5 rounded-full" id="display-margen-factor">1.20x</span>
                             </div>
                             <input type="range" id="slider-margen" min="1.0" max="3.0" step="0.05" value="1.20" oninput="Handlers.handleWorkshopConfigChange()"
-                                class="w-full accent-rubielle-500 cursor-pointer h-2 bg-rubielle-100 rounded-lg">
-                            <div class="flex justify-between text-[10px] text-slate-muted font-bold mt-1">
-                                <span>1.0x (Sin margen)</span>
-                                <span>1.2x (20%)</span>
-                                <span>2.0x (100%)</span>
+                                class="w-full accent-rubielle-500 cursor-pointer h-2 bg-rubielle-100 dark:bg-slate-700 rounded-lg">
+                            <div class="flex justify-between text-[10px] text-slate-muted dark:text-slate-400 font-bold mt-1">
+                                <span>1.0x</span>
+                                <span>1.2x</span>
+                                <span>2.0x</span>
                                 <span>3.0x</span>
                             </div>
                         </div>
@@ -206,51 +215,51 @@
                         <!-- Tiempo Ensamble General -->
                         <div>
                             <div class="flex justify-between items-center mb-1">
-                                <label for="input-tiempo-ensamble" class="text-xs font-bold text-slate-text flex items-center gap-1">
+                                <label for="input-tiempo-ensamble" class="text-xs font-bold text-slate-text dark:text-slate-300 flex items-center gap-1">
                                     <i class="fa-solid fa-box text-rubielle-400"></i> Ensamble & Empaque General
                                 </label>
-                                <span class="text-xs font-extrabold text-rubielle-700" id="display-tiempo-ensamble">120 min</span>
+                                <span class="text-xs font-extrabold text-rubielle-700 dark:text-rubielle-300" id="display-tiempo-ensamble">120 min</span>
                             </div>
                             <div class="relative flex items-center">
                                 <input type="number" id="input-tiempo-ensamble" value="120" step="5" min="0" oninput="Handlers.handleWorkshopConfigChange()"
-                                    class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs font-bold text-slate-dark focus:outline-none focus:border-rubielle-400 focus:ring-2 focus:ring-rubielle-100 transition-all">
+                                    class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs font-bold focus:outline-none focus:border-rubielle-400 transition-all">
                                 <span class="absolute right-3 text-xs text-slate-muted font-bold">minutos</span>
                             </div>
-                            <p class="text-[11px] text-slate-muted mt-1">Tiempo de armado de estructura, envoltorio y moños.</p>
+                            <p class="text-[11px] text-slate-muted dark:text-slate-400 mt-1">Tiempo de armado de estructura, envoltorio y moños.</p>
                         </div>
 
-                        <!-- Porcentaje de Merma / Desperdicio (NUEVO CONTROL) -->
+                        <!-- Porcentaje de Merma / Desperdicio -->
                         <div>
                             <div class="flex justify-between items-center mb-1">
-                                <label for="input-porcentaje-merma" class="text-xs font-bold text-slate-text flex items-center gap-1">
+                                <label for="input-porcentaje-merma" class="text-xs font-bold text-slate-text dark:text-slate-300 flex items-center gap-1">
                                     <i class="fa-solid fa-recycle text-rubielle-400"></i> % Merma de Materiales
                                 </label>
-                                <span class="text-xs font-extrabold text-rubielle-700" id="display-porcentaje-merma">5.0%</span>
+                                <span class="text-xs font-extrabold text-rubielle-700 dark:text-rubielle-300" id="display-porcentaje-merma">5.0%</span>
                             </div>
                             <div class="relative flex items-center">
                                 <input type="number" id="input-porcentaje-merma" value="5" step="0.5" min="0" max="50" oninput="Handlers.handleWorkshopConfigChange()"
-                                    class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs font-bold text-slate-dark focus:outline-none focus:border-rubielle-400 focus:ring-2 focus:ring-rubielle-100 transition-all">
+                                    class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs font-bold focus:outline-none focus:border-rubielle-400 transition-all">
                                 <span class="absolute right-3 text-xs text-slate-muted font-bold">%</span>
                             </div>
-                            <p class="text-[11px] text-slate-muted mt-1">Cálculo de sobrantes, cortes y retazos perdidos de insumos.</p>
+                            <p class="text-[11px] text-slate-muted dark:text-slate-400 mt-1">Cálculo de sobrantes y recortes perdidos de insumos.</p>
                         </div>
                     </div>
 
-                    <div class="mt-5 pt-4 border-t border-rubielle-100">
-                        <button onclick="Handlers.loadDefaultPack()" class="w-full py-2.5 px-3 rounded-xl bg-rubielle-50 hover:bg-rubielle-100 text-rubielle-700 text-xs font-bold border border-rubielle-200 transition-all flex items-center justify-center gap-2 shadow-xs">
+                    <div class="mt-5 pt-4 border-t border-rubielle-100 dark:border-slate-700">
+                        <button onclick="Handlers.loadDefaultPack()" class="w-full py-2.5 px-3 rounded-xl bg-rubielle-50 dark:bg-slate-700 hover:bg-rubielle-100 dark:hover:bg-slate-600 text-rubielle-700 dark:text-rubielle-200 text-xs font-bold border border-rubielle-200 dark:border-slate-600 transition-all flex items-center justify-center gap-2 shadow-xs">
                             <i class="fa-solid fa-wand-magic-sparkles text-rubielle-500"></i> Cargar Empaque Estándar Ramo
                         </button>
                     </div>
                 </div>
 
                 <!-- QUICK TIP BOX -->
-                <div class="p-4 rounded-3xl bg-white border border-rubielle-200 shadow-xs flex items-start space-x-3">
-                    <div class="w-9 h-9 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div class="p-4 rounded-3xl bg-white dark:bg-slate-800/90 border border-rubielle-200 dark:border-slate-700 shadow-xs flex items-start space-x-3">
+                    <div class="w-9 h-9 rounded-2xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <i class="fa-solid fa-lightbulb text-sm"></i>
                     </div>
                     <div>
-                        <h4 class="text-xs font-bold text-slate-dark">Consejo de Cotización</h4>
-                        <p class="text-[11px] text-slate-muted mt-0.5 leading-relaxed">
+                        <h4 class="text-xs font-bold text-slate-dark dark:text-slate-200">Consejo de Cotización</h4>
+                        <p class="text-[11px] text-slate-muted dark:text-slate-400 mt-0.5 leading-relaxed">
                             Asegúrate de incluir los pliegos de Papel Coreano o Papel Leche para que el costo de materiales refleje con exactitud la presentación final.
                         </p>
                     </div>
@@ -264,42 +273,42 @@
                 <!-- MOBILE TABS SELECTOR -->
                 <div class="md:hidden mb-4 flex space-x-2 overflow-x-auto pb-2 custom-scrollbar">
                     <button onclick="UI.setActiveTab('builder')" id="mob-tab-builder" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-rubielle-500 text-white shadow-xs">💐 Cotizador</button>
-                    <button onclick="UI.setActiveTab('insumos')" id="mob-tab-insumos" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white text-slate-text border border-rubielle-200">📦 Empaque</button>
-                    <button onclick="UI.setActiveTab('history')" id="mob-tab-history" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white text-slate-text border border-rubielle-200">📜 Historial</button>
-                    <button onclick="UI.setActiveTab('catalog')" id="mob-tab-catalog" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white text-slate-text border border-rubielle-200">🗃️ Catálogo</button>
+                    <button onclick="UI.setActiveTab('insumos')" id="mob-tab-insumos" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">📦 Empaque</button>
+                    <button onclick="UI.setActiveTab('history')" id="mob-tab-history" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">📜 Historial</button>
+                    <button onclick="UI.setActiveTab('catalog')" id="mob-tab-catalog" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white dark:bg-slate-800 text-slate-text dark:text-slate-200 border border-rubielle-200 dark:border-slate-700">🗃️️ Catálogo</button>
                 </div>
 
                 <!-- TAB 1: ARMAR COMPOSICIÓN / COTIZADOR -->
                 <div id="tab-content-builder" class="tab-pane space-y-6">
                     
                     <!-- ADD PIECE TO BOUQUET CARD -->
-                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100">
-                        <h3 class="font-serif font-bold text-lg text-rubielle-900 mb-1 flex items-center gap-2">
+                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90">
+                        <h3 class="font-serif font-bold text-lg text-rubielle-900 dark:text-rubielle-200 mb-1 flex items-center gap-2">
                             <i class="fa-solid fa-plus-circle text-rubielle-500 text-sm"></i>
                             Añadir Piezas al Ramo
                         </h3>
-                        <p class="text-xs text-slate-muted mb-4">Filtra y selecciona flores, amigurumis o tejidos para agregarlos a la proforma activa.</p>
+                        <p class="text-xs text-slate-muted dark:text-slate-400 mb-4">Filtra y selecciona flores, amigurumis o tejidos para agregarlos a la proforma activa.</p>
 
                         <!-- Buscador dinámico de flores/piezas -->
                         <div class="mb-3">
                             <div class="relative">
-                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-muted"></i>
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-muted dark:text-slate-400"></i>
                                 <input type="text" id="input-search-pieza" placeholder="Filtrar flor o pieza por nombre..."
-                                    class="w-full pl-8 pr-3 py-1.5 bg-white rounded-xl border border-rubielle-200 text-xs text-slate-dark focus:outline-none focus:border-rubielle-400">
+                                    class="w-full pl-8 pr-3 py-1.5 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none focus:border-rubielle-400">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
                             <div class="sm:col-span-6">
-                                <label for="select-piezas" class="block text-xs font-bold text-slate-text mb-1">Pieza o Flor:</label>
-                                <select id="select-piezas" class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs font-semibold text-slate-dark focus:outline-none focus:border-rubielle-400">
+                                <label for="select-piezas" class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Pieza o Flor:</label>
+                                <select id="select-piezas" class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs font-semibold focus:outline-none focus:border-rubielle-400">
                                     <!-- Dynamic Options -->
                                 </select>
                             </div>
                             <div class="sm:col-span-3">
-                                <label for="input-add-qty" class="block text-xs font-bold text-slate-text mb-1">Cantidad:</label>
+                                <label for="input-add-qty" class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Cantidad:</label>
                                 <input type="number" id="input-add-qty" value="1" min="1" step="1" 
-                                    class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs font-bold text-slate-dark text-center focus:outline-none focus:border-rubielle-400">
+                                    class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs font-bold text-center focus:outline-none focus:border-rubielle-400">
                             </div>
                             <div class="sm:col-span-3">
                                 <button onclick="Handlers.addItemFromSelect()" class="w-full py-2 px-3 rounded-xl btn-primary-gradient text-white text-xs font-bold shadow-xs flex items-center justify-center gap-1.5">
@@ -310,11 +319,11 @@
                     </div>
 
                     <!-- CART ITEMS BREAKDOWN TABLE -->
-                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100">
-                        <div class="flex items-center justify-between pb-3 mb-4 border-b border-rubielle-100">
+                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90">
+                        <div class="flex items-center justify-between pb-3 mb-4 border-b border-rubielle-100 dark:border-slate-700">
                             <div>
-                                <h3 class="font-serif font-bold text-base text-rubielle-900">Resumen y Desglose del Pedido</h3>
-                                <p class="text-[11px] text-slate-muted">Ajusta las cantidades o elimina elementos del cálculo.</p>
+                                <h3 class="font-serif font-bold text-base text-rubielle-900 dark:text-rubielle-200">Resumen y Desglose del Pedido</h3>
+                                <p class="text-[11px] text-slate-muted dark:text-slate-400">Ajusta las cantidades o elimina elementos del cálculo.</p>
                             </div>
                             <button onclick="Handlers.clearAllOrder()" class="text-xs text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1">
                                 <i class="fa-solid fa-trash-can"></i> Vaciar Todo
@@ -323,7 +332,7 @@
 
                         <!-- FLOWER PIECES LIST -->
                         <div class="mb-5">
-                            <h4 class="text-xs font-bold uppercase tracking-wider text-rubielle-700 mb-2 flex items-center gap-1.5">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-rubielle-700 dark:text-rubielle-300 mb-2 flex items-center gap-1.5">
                                 <i class="fa-solid fa-spa text-rubielle-500"></i> Flores & Piezas Principales
                             </h4>
                             <div id="cart-flowers-list" class="space-y-2">
@@ -333,7 +342,7 @@
 
                         <!-- PACKAGING INSUMOS LIST -->
                         <div>
-                            <h4 class="text-xs font-bold uppercase tracking-wider text-rubielle-700 mb-2 flex items-center gap-1.5">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-rubielle-700 dark:text-rubielle-300 mb-2 flex items-center gap-1.5">
                                 <i class="fa-solid fa-box text-rubielle-500"></i> Insumos & Empaque
                             </h4>
                             <div id="cart-insumos-list" class="space-y-2">
@@ -344,34 +353,34 @@
 
                     <!-- FINANCIAL METRICS SUMMARY CARDS -->
                     <div class="space-y-4">
-                        <h3 class="font-serif font-bold text-lg text-rubielle-900 flex items-center gap-2">
+                        <h3 class="font-serif font-bold text-lg text-rubielle-900 dark:text-rubielle-200 flex items-center gap-2">
                             <i class="fa-solid fa-calculator text-rubielle-500 text-sm"></i>
                             Análisis Financiero
                         </h3>
 
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <div class="p-4 rounded-2xl bg-white border border-rubielle-100 shadow-xs text-center">
-                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-muted mb-1">Costo Materiales</p>
-                                <p id="metric-costo-mat" class="text-lg lg:text-xl font-extrabold text-slate-dark">S/ 0.00</p>
-                                <p id="metric-sub-mat" class="text-[10px] text-slate-muted mt-1">Flores: S/ 0 | Ins: S/ 0</p>
+                            <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/90 border border-rubielle-100 dark:border-slate-700 shadow-xs text-center">
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-muted dark:text-slate-400 mb-1">Costo Materiales</p>
+                                <p id="metric-costo-mat" class="text-lg lg:text-xl font-extrabold text-slate-dark dark:text-slate-100">S/ 0.00</p>
+                                <p id="metric-sub-mat" class="text-[10px] text-slate-muted dark:text-slate-400 mt-1">Flores: S/ 0 | Ins: S/ 0</p>
                             </div>
 
-                            <div class="p-4 rounded-2xl bg-white border border-rubielle-100 shadow-xs text-center">
-                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-muted mb-1">Tiempo Elaboración</p>
-                                <p id="metric-tiempo-total" class="text-lg lg:text-xl font-extrabold text-slate-dark">0.0 hrs</p>
-                                <p id="metric-sub-tiempo" class="text-[10px] text-slate-muted mt-1">Total: 0 mins</p>
+                            <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/90 border border-rubielle-100 dark:border-slate-700 shadow-xs text-center">
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-muted dark:text-slate-400 mb-1">Tiempo Elaboración</p>
+                                <p id="metric-tiempo-total" class="text-lg lg:text-xl font-extrabold text-slate-dark dark:text-slate-100">0.0 hrs</p>
+                                <p id="metric-sub-tiempo" class="text-[10px] text-slate-muted dark:text-slate-400 mt-1">Total: 0 mins</p>
                             </div>
 
-                            <div class="p-4 rounded-2xl bg-white border border-rubielle-100 shadow-xs text-center">
-                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-muted mb-1">Mano de Obra</p>
-                                <p id="metric-mano-obra" class="text-lg lg:text-xl font-extrabold text-slate-dark">S/ 0.00</p>
-                                <p id="metric-sub-costo-base" class="text-[10px] text-slate-muted mt-1">Costo Base: S/ 0.00</p>
+                            <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/90 border border-rubielle-100 dark:border-slate-700 shadow-xs text-center">
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-muted dark:text-slate-400 mb-1">Mano de Obra</p>
+                                <p id="metric-mano-obra" class="text-lg lg:text-xl font-extrabold text-slate-dark dark:text-slate-100">S/ 0.00</p>
+                                <p id="metric-sub-costo-base" class="text-[10px] text-slate-muted dark:text-slate-400 mt-1">Costo Base: S/ 0.00</p>
                             </div>
 
-                            <div class="p-4 rounded-2xl bg-white border border-rubielle-100 shadow-xs text-center">
-                                <p class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 mb-1">Margen Neto</p>
-                                <p id="metric-margen-neto" class="text-lg lg:text-xl font-extrabold text-emerald-600">S/ 0.00</p>
-                                <p class="text-[10px] text-emerald-700/80 mt-1 font-bold">Ganancia limpia</p>
+                            <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/90 border border-rubielle-100 dark:border-slate-700 shadow-xs text-center">
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">Margen Neto</p>
+                                <p id="metric-margen-neto" class="text-lg lg:text-xl font-extrabold text-emerald-600 dark:text-emerald-400">S/ 0.00</p>
+                                <p class="text-[10px] text-emerald-700/80 dark:text-emerald-400/80 mt-1 font-bold">Ganancia limpia</p>
                             </div>
                         </div>
 
@@ -387,45 +396,44 @@
                     </div>
 
                     <!-- PROFORMA EXPORTER SECTION -->
-                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 space-y-4">
+                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90 space-y-4">
                         <div class="flex items-center justify-between">
-                            <h3 class="font-serif font-bold text-base text-rubielle-900 flex items-center gap-2">
+                            <h3 class="font-serif font-bold text-base text-rubielle-900 dark:text-rubielle-200 flex items-center gap-2">
                                 <i class="fa-brands fa-whatsapp text-emerald-500"></i>
                                 Exportar Proforma para Cliente
                             </h3>
-                            <span class="text-[10px] bg-emerald-50 text-emerald-700 font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200">
+                            <span class="text-[10px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
                                 Formato WhatsApp / Imprimible
                             </span>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label for="input-cliente-nombre" class="block text-xs font-bold text-slate-text mb-1">Nombre del Cliente:</label>
+                                <label for="input-cliente-nombre" class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Nombre del Cliente:</label>
                                 <input type="text" id="input-cliente-nombre" value="Cliente Preferencial" oninput="Handlers.generateProformaText()"
-                                    class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs text-slate-dark focus:outline-none focus:border-rubielle-400 font-semibold">
+                                    class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none focus:border-rubielle-400 font-semibold">
                             </div>
                             <div>
-                                <label for="input-ramo-nombre" class="block text-xs font-bold text-slate-text mb-1">Concepto / Ramo:</label>
+                                <label for="input-ramo-nombre" class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Concepto / Ramo:</label>
                                 <input type="text" id="input-ramo-nombre" value="Ramo Floral Personalizado" oninput="Handlers.generateProformaText()"
-                                    class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs text-slate-dark focus:outline-none focus:border-rubielle-400 font-semibold">
+                                    class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none focus:border-rubielle-400 font-semibold">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-slate-text mb-1">Vista Previa de Mensaje:</label>
+                            <label class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Vista Previa de Mensaje:</label>
                             <textarea id="textarea-proforma" rows="6" readonly
-                                class="w-full p-3 bg-cream-50 rounded-2xl border border-rubielle-200 text-xs font-mono text-slate-dark focus:outline-none resize-none custom-scrollbar"></textarea>
+                                class="w-full p-3 bg-cream-50 dark:bg-slate-900 dark:text-slate-100 rounded-2xl border border-rubielle-200 dark:border-slate-700 text-xs font-mono focus:outline-none resize-none custom-scrollbar"></textarea>
                         </div>
 
-                        <!-- Botones de Acción incluyendo la opción de Imprimir -->
                         <div class="flex flex-wrap gap-3 pt-2">
-                            <button onclick="Handlers.copyProformaToClipboard()" class="flex-1 min-w-[130px] py-2.5 px-3 rounded-xl bg-white hover:bg-rubielle-50 text-rubielle-700 text-xs font-bold border border-rubielle-300 transition-all shadow-xs flex items-center justify-center gap-2">
+                            <button onclick="Handlers.copyProformaToClipboard()" class="flex-1 min-w-[130px] py-2.5 px-3 rounded-xl bg-white dark:bg-slate-700 hover:bg-rubielle-50 dark:hover:bg-slate-600 text-rubielle-700 dark:text-rubielle-200 text-xs font-bold border border-rubielle-300 dark:border-slate-600 transition-all shadow-xs flex items-center justify-center gap-2">
                                 <i class="fa-regular fa-copy"></i> Copiar
                             </button>
                             <a id="link-whatsapp-send" target="_blank" href="#" class="flex-1 min-w-[140px] py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-2">
                                 <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
                             </a>
-                            <button onclick="Handlers.printProformaPDF()" class="flex-1 min-w-[130px] py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-2">
+                            <button onclick="Handlers.printProformaPDF()" class="flex-1 min-w-[130px] py-2.5 px-3 rounded-xl bg-slate-800 dark:bg-slate-900 hover:bg-slate-900 text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-2 border dark:border-slate-700">
                                 <i class="fa-solid fa-print"></i> Imprimir PDF
                             </button>
                             <button onclick="Handlers.saveOrderToHistory()" class="flex-1 min-w-[140px] py-2.5 px-3 rounded-xl btn-primary-gradient text-white text-xs font-bold shadow-xs flex items-center justify-center gap-2">
@@ -438,17 +446,17 @@
 
                 <!-- TAB 2: SELECCIÓN RÁPIDA DE INSUMOS Y EMPAQUE -->
                 <div id="tab-content-insumos" class="tab-pane hidden space-y-6">
-                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-4 border-b border-rubielle-100">
+                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-4 border-b border-rubielle-100 dark:border-slate-700">
                             <div>
-                                <h3 class="font-serif font-bold text-lg text-rubielle-900">Catálogo de Empaque e Insumos</h3>
-                                <p class="text-xs text-slate-muted">Selecciona las cantidades necesarias para el envoltorio y presentación.</p>
+                                <h3 class="font-serif font-bold text-lg text-rubielle-900 dark:text-rubielle-200">Catálogo de Empaque e Insumos</h3>
+                                <p class="text-xs text-slate-muted dark:text-slate-400">Selecciona las cantidades necesarias para el envoltorio y presentación.</p>
                             </div>
                             <div class="w-full sm:w-64">
                                 <div class="relative">
-                                    <i class="fa-solid fa-search absolute left-3 top-2.5 text-xs text-slate-muted"></i>
+                                    <i class="fa-solid fa-search absolute left-3 top-2.5 text-xs text-slate-muted dark:text-slate-400"></i>
                                     <input type="text" id="input-search-insumos" oninput="UI.renderInsumosGrid()" placeholder="Buscar insumo..."
-                                        class="w-full pl-8 pr-3 py-1.5 bg-white rounded-xl border border-rubielle-200 text-xs text-slate-dark focus:outline-none focus:border-rubielle-400">
+                                        class="w-full pl-8 pr-3 py-1.5 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none focus:border-rubielle-400">
                                 </div>
                             </div>
                         </div>
@@ -464,39 +472,39 @@
                 <div id="tab-content-history" class="tab-pane hidden space-y-6">
                     
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="p-4 rounded-2xl bg-white border border-rubielle-100 shadow-xs">
-                            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-muted mb-1">Total Cotizado / Vendido</p>
-                            <h3 id="hist-metric-total-ventas" class="font-serif text-2xl font-bold text-rubielle-900">S/ 0.00</h3>
-                            <p class="text-[10px] text-slate-muted mt-1">Acumulado en sistema</p>
+                        <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/90 border border-rubielle-100 dark:border-slate-700 shadow-xs">
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-muted dark:text-slate-400 mb-1">Total Cotizado / Vendido</p>
+                            <h3 id="hist-metric-total-ventas" class="font-serif text-2xl font-bold text-rubielle-900 dark:text-rubielle-200">S/ 0.00</h3>
+                            <p class="text-[10px] text-slate-muted dark:text-slate-400 mt-1">Acumulado en sistema</p>
                         </div>
-                        <div class="p-4 rounded-2xl bg-white border border-rubielle-100 shadow-xs">
-                            <p class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 mb-1">Ganancia Neta Total</p>
-                            <h3 id="hist-metric-total-ganancia" class="font-serif text-2xl font-bold text-emerald-600">S/ 0.00</h3>
-                            <p class="text-[10px] text-slate-muted mt-1">Margen acumulado</p>
+                        <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/90 border border-rubielle-100 dark:border-slate-700 shadow-xs">
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">Ganancia Neta Total</p>
+                            <h3 id="hist-metric-total-ganancia" class="font-serif text-2xl font-bold text-emerald-600 dark:text-emerald-400">S/ 0.00</h3>
+                            <p class="text-[10px] text-slate-muted dark:text-slate-400 mt-1">Margen acumulado</p>
                         </div>
-                        <div class="p-4 rounded-2xl bg-white border border-rubielle-100 shadow-xs">
-                            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-muted mb-1">Pedidos Registrados</p>
-                            <h3 id="hist-metric-total-count" class="font-serif text-2xl font-bold text-slate-dark">0</h3>
-                            <p class="text-[10px] text-slate-muted mt-1">Total de ramos guardados</p>
+                        <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/90 border border-rubielle-100 dark:border-slate-700 shadow-xs">
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-muted dark:text-slate-400 mb-1">Pedidos Registrados</p>
+                            <h3 id="hist-metric-total-count" class="font-serif text-2xl font-bold text-slate-dark dark:text-slate-100">0</h3>
+                            <p class="text-[10px] text-slate-muted dark:text-slate-400 mt-1">Total de ramos guardados</p>
                         </div>
                     </div>
 
-                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-4 border-b border-rubielle-100">
-                            <h3 class="font-serif font-bold text-lg text-rubielle-900">Registro Histórico de Pedidos</h3>
+                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-4 border-b border-rubielle-100 dark:border-slate-700">
+                            <h3 class="font-serif font-bold text-lg text-rubielle-900 dark:text-rubielle-200">Registro Histórico de Pedidos</h3>
                             <div class="flex items-center space-x-2">
-                                <button onclick="Handlers.exportHistoryToCSV()" class="py-1.5 px-3 rounded-xl bg-white hover:bg-rubielle-50 text-rubielle-700 text-xs font-bold border border-rubielle-200 shadow-xs flex items-center gap-1.5">
+                                <button onclick="Handlers.exportHistoryToCSV()" class="py-1.5 px-3 rounded-xl bg-white dark:bg-slate-700 hover:bg-rubielle-50 dark:hover:bg-slate-600 text-rubielle-700 dark:text-rubielle-200 text-xs font-bold border border-rubielle-200 dark:border-slate-600 shadow-xs flex items-center gap-1.5">
                                     <i class="fa-solid fa-download"></i> Exportar CSV
                                 </button>
-                                <button onclick="Handlers.clearHistory()" class="py-1.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200 shadow-xs flex items-center gap-1.5">
+                                <button onclick="Handlers.clearHistory()" class="py-1.5 px-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 text-xs font-bold border border-rose-200 dark:border-rose-800 shadow-xs flex items-center gap-1.5">
                                     <i class="fa-solid fa-trash-can"></i> Limpiar
                                 </button>
                             </div>
                         </div>
 
                         <div class="overflow-x-auto custom-scrollbar">
-                            <table class="w-full text-left text-xs text-slate-text">
-                                <thead class="bg-rubielle-50 text-rubielle-900 font-bold uppercase text-[10px] tracking-wider">
+                            <table class="w-full text-left text-xs text-slate-text dark:text-slate-200">
+                                <thead class="bg-rubielle-50 dark:bg-slate-900 text-rubielle-900 dark:text-rubielle-200 font-bold uppercase text-[10px] tracking-wider">
                                     <tr>
                                         <th class="p-3 rounded-l-xl">Fecha</th>
                                         <th class="p-3">Cliente</th>
@@ -508,7 +516,7 @@
                                         <th class="p-3 text-right rounded-r-xl">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="history-table-body" class="divide-y divide-rubielle-100 font-medium">
+                                <tbody id="history-table-body" class="divide-y divide-rubielle-100 dark:divide-slate-700 font-medium">
                                     <!-- Dynamic Injection -->
                                 </tbody>
                             </table>
@@ -519,17 +527,17 @@
 
                 <!-- TAB 4: CATÁLOGO DE MATERIALES -->
                 <div id="tab-content-catalog" class="tab-pane hidden space-y-6">
-                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-4 border-b border-rubielle-100">
+                    <div class="glass-card rounded-3xl p-5 shadow-soft-rose border border-rubielle-100 dark:border-slate-800 dark:bg-slate-800/90">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-4 border-b border-rubielle-100 dark:border-slate-700">
                             <div>
-                                <h3 class="font-serif font-bold text-lg text-rubielle-900">Base de Datos de Materiales & Recetas</h3>
-                                <p class="text-xs text-slate-muted">Gestiona costos unitarios, tiempos de confección y desgloses.</p>
+                                <h3 class="font-serif font-bold text-lg text-rubielle-900 dark:text-rubielle-200">Base de Datos de Materiales & Recetas</h3>
+                                <p class="text-xs text-slate-muted dark:text-slate-400">Gestiona costos unitarios, tiempos de confección y desgloses.</p>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <button onclick="UI.openItemModal()" class="py-1.5 px-3 rounded-xl btn-primary-gradient text-white text-xs font-bold shadow-xs flex items-center gap-1.5">
                                     <i class="fa-solid fa-plus"></i> Nuevo Material
                                 </button>
-                                <button onclick="Handlers.resetDefaultCatalog()" class="py-1.5 px-3 rounded-xl bg-white hover:bg-rubielle-50 text-slate-text text-xs font-bold border border-rubielle-200 shadow-xs">
+                                <button onclick="Handlers.resetDefaultCatalog()" class="py-1.5 px-3 rounded-xl bg-white dark:bg-slate-700 hover:bg-rubielle-50 dark:hover:bg-slate-600 text-slate-text dark:text-slate-200 text-xs font-bold border border-rubielle-200 dark:border-slate-600 shadow-xs">
                                     <i class="fa-solid fa-rotate-left"></i> Restablecer
                                 </button>
                             </div>
@@ -539,10 +547,10 @@
                         <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 mb-4">
                             <div class="sm:col-span-8">
                                 <input type="text" id="input-search-catalog" oninput="UI.renderCatalogTable()" placeholder="Buscar por código, nombre o receta..."
-                                    class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs text-slate-dark focus:outline-none focus:border-rubielle-400">
+                                    class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none focus:border-rubielle-400">
                             </div>
                             <div class="sm:col-span-4">
-                                <select id="select-category-catalog" onchange="UI.renderCatalogTable()" class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs font-semibold text-slate-dark focus:outline-none focus:border-rubielle-400">
+                                <select id="select-category-catalog" onchange="UI.renderCatalogTable()" class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs font-semibold focus:outline-none focus:border-rubielle-400">
                                     <option value="ALL">Todas las Categorías</option>
                                     <option value="Limpiapipas">Limpiapipas</option>
                                     <option value="Crochet">Crochet</option>
@@ -554,8 +562,8 @@
 
                         <!-- Catalog Table -->
                         <div class="overflow-x-auto custom-scrollbar">
-                            <table class="w-full text-left text-xs text-slate-text">
-                                <thead class="bg-rubielle-50 text-rubielle-900 font-bold uppercase text-[10px] tracking-wider">
+                            <table class="w-full text-left text-xs text-slate-text dark:text-slate-200">
+                                <thead class="bg-rubielle-50 dark:bg-slate-900 text-rubielle-900 dark:text-rubielle-200 font-bold uppercase text-[10px] tracking-wider">
                                     <tr>
                                         <th class="p-3 rounded-l-xl">ID</th>
                                         <th class="p-3">Nombre</th>
@@ -566,7 +574,7 @@
                                         <th class="p-3 text-right rounded-r-xl">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="catalog-table-body" class="divide-y divide-rubielle-100 font-medium">
+                                <tbody id="catalog-table-body" class="divide-y divide-rubielle-100 dark:divide-slate-700 font-medium">
                                     <!-- Dynamic Injection -->
                                 </tbody>
                             </table>
@@ -583,11 +591,11 @@
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
     <!-- CREATE / EDIT MATERIAL MODAL -->
-    <div id="modal-item-editor" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="glass-card bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-rubielle-200 space-y-4 animate-fade-in">
-            <div class="flex items-center justify-between pb-2 border-b border-rubielle-100">
-                <h3 id="modal-item-title" class="font-serif font-bold text-lg text-rubielle-900">Agregar Nuevo Material / Flor</h3>
-                <button onclick="UI.closeItemModal()" class="text-slate-400 hover:text-slate-600">
+    <div id="modal-item-editor" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="glass-card bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-rubielle-200 dark:border-slate-700 space-y-4 animate-fade-in">
+            <div class="flex items-center justify-between pb-2 border-b border-rubielle-100 dark:border-slate-700">
+                <h3 id="modal-item-title" class="font-serif font-bold text-lg text-rubielle-900 dark:text-rubielle-200">Agregar Nuevo Material / Flor</h3>
+                <button onclick="UI.closeItemModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
@@ -597,13 +605,13 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-slate-text mb-1">Código ID:</label>
+                        <label class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Código ID:</label>
                         <input type="text" id="edit-item-id" required placeholder="Ej. LP10"
-                            class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs text-slate-dark focus:outline-none">
+                            class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-text mb-1">Categoría:</label>
-                        <select id="edit-item-category" required class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs font-semibold text-slate-dark focus:outline-none">
+                        <label class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Categoría:</label>
+                        <select id="edit-item-category" required class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs font-semibold focus:outline-none">
                             <option value="Limpiapipas">Limpiapipas</option>
                             <option value="Crochet">Crochet</option>
                             <option value="Amigurumis">Amigurumis</option>
@@ -613,32 +621,32 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-text mb-1">Nombre del Elemento:</label>
+                    <label class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Nombre del Elemento:</label>
                     <input type="text" id="edit-item-name" required placeholder="Ej. Girasol Mediano"
-                        class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs text-slate-dark focus:outline-none">
+                        class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-slate-text mb-1">Costo Material (S/):</label>
+                        <label class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Costo Material (S/):</label>
                         <input type="number" id="edit-item-cost" required step="0.01" min="0" placeholder="0.80"
-                            class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs text-slate-dark focus:outline-none">
+                            class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-text mb-1">Tiempo (min):</label>
+                        <label class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Tiempo (min):</label>
                         <input type="number" id="edit-item-time" required step="1" min="0" placeholder="20"
-                            class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs text-slate-dark focus:outline-none">
+                            class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-text mb-1">Descripción / Receta:</label>
+                    <label class="block text-xs font-bold text-slate-text dark:text-slate-300 mb-1">Descripción / Receta:</label>
                     <textarea id="edit-item-desc" rows="2" placeholder="Detalles de materiales o tiempos parciales..."
-                        class="w-full px-3 py-2 bg-white rounded-xl border border-rubielle-200 text-xs text-slate-dark focus:outline-none resize-none"></textarea>
+                        class="w-full px-3 py-2 bg-white dark:bg-slate-900 dark:text-slate-100 dark:border-slate-700 rounded-xl border border-rubielle-200 text-xs focus:outline-none resize-none"></textarea>
                 </div>
 
                 <div class="pt-2 flex justify-end space-x-2">
-                    <button type="button" onclick="UI.closeItemModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">Cancelar</button>
+                    <button type="button" onclick="UI.closeItemModal()" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold">Cancelar</button>
                     <button type="submit" class="px-4 py-2 rounded-xl btn-primary-gradient text-white text-xs font-bold">Guardar Cambios</button>
                 </div>
             </form>
@@ -646,10 +654,10 @@
     </div>
 
     <!-- FOOTER -->
-    <footer class="mt-12 py-6 bg-white border-t border-rubielle-100 text-center text-xs text-slate-muted">
+    <footer class="mt-12 py-6 bg-white dark:bg-slate-900 border-t border-rubielle-100 dark:border-slate-800 text-center text-xs text-slate-muted dark:text-slate-400">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
             <p class="font-medium">Rubielle © 2026 - Arte Floral & Artesanal. Todos los derechos reservados.</p>
-            <p class="text-[11px] text-rubielle-600 font-bold">Sistema Modular Pro v3.0</p>
+            <p class="text-[11px] text-rubielle-600 dark:text-rubielle-400 font-bold">Sistema Modular Pro v3.0</p>
         </div>
     </footer>
 

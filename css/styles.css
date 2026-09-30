@@ -19,10 +19,20 @@ body {
     border-bottom: 1px solid rgba(253, 232, 237, 0.8);
 }
 
+.dark .glass-header {
+    background: rgba(15, 23, 42, 0.88);
+    border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+}
+
 .glass-card {
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(253, 232, 237, 0.75);
+}
+
+.dark .glass-card {
+    background: rgba(30, 27, 38, 0.92);
+    border: 1px solid rgba(45, 40, 56, 0.75);
 }
 
 .rose-gradient-bg {
@@ -52,9 +62,15 @@ body {
     background: #FFF5F7;
     border-radius: 8px;
 }
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+    background: #0f172a;
+}
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #F4A7BD;
     border-radius: 8px;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #334155;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #E06C88;
