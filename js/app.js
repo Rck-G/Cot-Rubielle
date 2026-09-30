@@ -615,8 +615,8 @@ const Handlers = {
             "Biruta": 1,
             "Blonda": 1,
             "Bolsa/Empaque": 1,
-            "Brochetas": total_flores,
-            "Floratei": total_flores,
+            "Brochetas": totalFlowers,
+            "Floratei": totalFlowers,
             "Caja": 1,
             "Cinta adhesiva": 1,
             "Cinta gruesa/grande": 1,
@@ -903,26 +903,24 @@ const Toast = {
         toast.className = `pointer-events-auto flex items-center space-x-2.5 px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-rubielle-200 dark:border-slate-700 shadow-xl text-xs font-bold text-slate-dark dark:text-slate-100 animate-fade-in`;
         
         const iconElem = document.createElement('i');
-        iconElem.className = `fa-solid ${icon} text-sm`;
+        iconElem.className = `fa-solid ${icon}`;
         
-        const msgElem = document.createElement('span');
-        msgElem.textContent = message;
+        const textElem = document.createElement('span');
+        textElem.textContent = message;
 
         toast.appendChild(iconElem);
-        toast.appendChild(msgElem);
+        toast.appendChild(textElem);
 
         container.appendChild(toast);
 
         setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transition = 'opacity 0.25s ease';
-            setTimeout(() => toast.remove(), 250);
-        }, 2500);
+            toast.remove();
+        }, 3000);
     }
 };
 
-// INICIALIZACIÓN ASÍNCRONA
-window.addEventListener('DOMContentLoaded', async () => {
+// INICIALIZACIÓN DE LA APLICACIÓN
+document.addEventListener('DOMContentLoaded', async () => {
     UI.initTheme();
     await State.init();
     UI.populatePieceSelect();
